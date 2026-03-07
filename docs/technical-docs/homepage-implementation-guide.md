@@ -7,156 +7,334 @@ Tài liệu hướng dẫn chuyển đổi màn hình trang chủ HTML sang Reac
 
 ---
 
+## 0. Hướng dẫn cài đặt từng bước (chạy theo thứ tự)
+
+### Bước 0.1: Cài đặt Tailwind CSS v4 (Vite)
+
+> **Dự án đang dùng Tailwind v4.** Cấu hình bằng CSS (`@theme`), không cần `tailwind.config.js`.
+
+```bash
+npm install -D tailwindcss @tailwindcss/vite
+```
+
+Trong `vite.config.ts` thêm plugin:
+
+```ts
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+})
+```
+
+Trong file CSS chính (`src/index.css` hoặc `src/styles/globals.css`):
+
+```css
+@import "tailwindcss";
+```
+
+Theme, colors, fonts cấu hình bằng `@theme` trong cùng file CSS (xem **mục 6.1**).
+
+---
+
+### Bước 0.2: Cài Phosphor Icons (React)
+
+```bash
+npm install @phosphor-icons/react
+```
+
+---
+
+### Bước 0.3: Cài React Router (cho routing)
+
+```bash
+npm install react-router-dom
+```
+
+---
+
+### Bước 0.4: Tạo thư mục cần thiết
+
+```bash
+mkdir -p src/features/home/components src/features/home/data src/shared/hooks
+```
+
+---
+
+### Bước 0.5: Chuẩn bị ảnh
+
+Copy các file ảnh vào `public/imgs/logo/`:
+
+- `result_logoAvi.png`
+- `Gemini_Generated_Image_tn5ff3tn5ff3tn5f.png` (mockup thiệp hero)
+
+Hoặc dùng ảnh có sẵn trong `src/assets/images/logo/` và import trong component.
+
+---
+
+### Bước 0.6: Cập nhật index.html (fonts + favicon)
+
+Mở `index.html`, thêm vào `<head>`:
+
+```html
+<link rel="icon" type="image/png" href="/imgs/logo/result_logoAvi.png" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+```
+
+Đổi `lang="en"` thành `lang="vi"` và `title` thành `LoveCards`.
+
+---
+
+### Bước 0.7: Kiểm tra chạy dev
+
+```bash
+npm run dev
+```
+
+Nếu chạy được, tiếp tục theo thứ tự **Bước 1 → Bước 12** trong **Mục 2** và copy code từ **Mục 6** bên dưới.
+
+---
+
+### Tổng hợp lệnh cài đặt (chạy một lần) — Tailwind v4 + Vite
+
+```bash
+npm install -D tailwindcss @tailwindcss/vite
+npm install @phosphor-icons/react react-router-dom
+mkdir -p src/features/home/components src/features/home/data src/shared/hooks
+```
+
+---
+
 ## 1. Phân tích & Phân chia
 
 Bản HTML trang chủ được chia thành các phần sau:
 
-| Phần | HTML tương ứng | Đặt vào | Ghi chú |
-|------|----------------|---------|---------|
-| **Layout nền** | `body`, scroll progress, CTA bar, back-to-top | `layouts/` | Header + Footer là layout chính |
-| **Header** | `<header>` nav | `layouts/Header.tsx` | Logo, nav, CTA |
-| **Hero** | Section đầu tiên | `pages/HomePage.tsx` hoặc `features/product/` | Hero + CTA |
-| **Phong cách** | Section "Lựa Chọn Dành Cho Bạn" | `features/product/` | Các category card |
-| **Mẫu thiệp** | Section `#templates` | `features/product/` | Grid template cards |
-| **Trending** | Section `#trending` | `features/product/` | FOMO cards |
-| **Quy trình** | Section `#how-it-works` | `shared/components/` hoặc `features/product/` | Steps + thống kê |
-| **Gallery** | Section `#gallery` | `features/product/` | Masonry layout |
-| **Testimonials** | Section `#testimonials` | `features/product/` hoặc `shared/` | Đánh giá khách hàng |
-| **CTA** | Section `#cta` + Sticky bar | `shared/components/` | Form đăng ký email |
-| **Footer** | `<footer>` | `layouts/Footer.tsx` | Links, contact, social |
+
+| Phần             | HTML tương ứng                                | Đặt vào                         | Ghi chú                         |
+| ---------------- | --------------------------------------------- | ------------------------------- | ------------------------------- |
+| **Layout nền**   | `body`, scroll progress, CTA bar, back-to-top | `layouts/`                      | Header + Footer là layout chính |
+| **Header**       | `<header>` nav                                | `layouts/Header.tsx`            | Logo, nav, CTA                  |
+| **Hero**         | Section đầu tiên                              | `features/home/`                | Hero + CTA                      |
+| **Phong cách**   | Section "Lựa Chọn Dành Cho Bạn"               | `features/home/`                | Các category card               |
+| **Mẫu thiệp**    | Section `#templates`                          | `features/home/`                | Grid template cards             |
+| **Trending**     | Section `#trending`                           | `features/home/`                | FOMO cards                      |
+| **Quy trình**    | Section `#how-it-works`                       | `features/home/`                | Steps + thống kê                |
+| **Gallery**      | Section `#gallery`                            | `features/home/`                | Masonry layout                  |
+| **Testimonials** | Section `#testimonials`                       | `features/home/` hoặc `shared/` | Đánh giá khách hàng             |
+| **CTA**          | Section `#cta` + Sticky bar                   | `shared/components/`            | Form đăng ký email              |
+| **Footer**       | `<footer>`                                    | `layouts/Footer.tsx`            | Links, contact, social          |
+
+
+Dùng `**features/home/`** cho toàn bộ section trang chủ. `**features/product/**` dành sau cho trang chi tiết mẫu thiệp khi cần.
 
 ---
 
-## 2. Lộ trình code theo từng bước
+## 2. Lộ trình code theo từng bước (chi tiết)
 
-### Bước 1: Chuẩn bị (Setup)
+### Bước 1: Styles & Theme (Tailwind v4)
 
-1. **Cài đặt Tailwind CSS** thay cho CDN  
-   - `npm install -D tailwindcss postcss autoprefixer`  
-   - Config `tailwind.config.js` với font, colors, boxShadow như trong HTML  
-2. **Cài Phosphor Icons cho React**  
-   - `npm install @phosphor-icons/react`  
-3. **Thiết lập fonts**  
-   - Google Fonts: Playfair Display, Inter  
-   - Thêm vào `index.html` hoặc `main.tsx`  
-4. **Ảnh**  
-   - Copy `result_logoAvi.png`, `Gemini_Generated_Image_*.png` vào `src/assets/images/`  
-   - Hoặc dùng `public/imgs/` và giữ đường dẫn `/imgs/...`
+**Làm gì:** Cấu hình Tailwind v4 bằng CSS (`@theme`), không dùng `tailwind.config.js`.
 
----
+1. Đảm bảo `vite.config.ts` đã thêm plugin `@tailwindcss/vite` (Bước 0.1)
+2. Tạo/ sửa file `src/styles/globals.css` (hoặc `src/index.css`):
+  - Thêm `@import "tailwindcss";`
+  - Thêm block `@theme { ... }` với colors, fonts, boxShadow như **mục 6.1**  
+  - Thêm keyframes, `.reveal`, `.masonry`, `.scroll-progress`, v.v. từ **mục 6.2**
+3. Trong `src/main.tsx`, import: `import './styles/globals.css'` (hoặc giữ `./index.css`)
 
-### Bước 2: Styles & Theme
-
-**File:** `src/styles/globals.css` + `tailwind.config.js`
-
-- Tạo `tailwind.config.js` với:
-  - `theme.extend.fontFamily` (sans: Inter, serif: Playfair Display)
-  - `theme.extend.colors`: cream, rose, softpink, lightrose, gold, slate
-  - `theme.extend.boxShadow`: soft, card
-- Chuyển các keyframe trong `<style>` (fadeInLoad, floating, pulse-dot) vào file CSS
-- Chuyển `.reveal`, `.masonry`, `.scroll-progress`, `.cta-bar`, `.back-to-top` thành Tailwind + CSS tùy chỉnh
+**Code tham khảo:** Xem **mục 6.1** (@theme cho Tailwind v4) và **mục 6.2** (globals.css).
 
 ---
 
-### Bước 3: Shared Components
+### Bước 2: Hooks UI (ScrollProgress, Reveal, Visibility)
 
-Tạo các component UI cơ bản dùng chung:
+**Làm gì:** Tạo hooks phục vụ hiệu ứng scroll, không tính số liệu.
 
-| Component | Đường dẫn | Mô tả |
-|-----------|-----------|-------|
-| `Button` | `shared/components/Button.tsx` | CTA: primary (rose), secondary (white + border) |
-| `Reveal` | `shared/components/Reveal.tsx` | Wrapper dùng IntersectionObserver, thêm class `.active` khi vào viewport |
-| `ScrollProgress` | `shared/components/ScrollProgress.tsx` | Thanh progress khi scroll |
-| `BackToTop` | `shared/components/BackToTop.tsx` | Nút lên đầu trang |
+1. Tạo `src/shared/hooks/useScrollProgress.ts` — copy từ **mục 6.13**
+2. Tạo `src/shared/components/ScrollProgress.tsx` — dùng `useScrollProgress`, render `<div className="scroll-progress" style={{ width: \`${progress}% }} />`
+3. Tạo `src/shared/components/BackToTop.tsx` — copy logic từ **mục 6.14**
+4. Tạo `src/shared/components/StickyCTABar.tsx` — copy từ **mục 6.14**
+5. Logic reveal: thêm class `reveal` cho element, dùng `useEffect` + `IntersectionObserver` như trong **mục 6.13** (có thể tạo hook `useRevealOnScroll` hoặc gắn trực tiếp trong MainLayout)
 
----
-
-### Bước 4: Layouts
-
-| Layout | Đường dẫn | Nội dung |
-|--------|-----------|----------|
-| `Header` | `layouts/Header.tsx` | Logo, nav links, CTA "Xem mẫu thiệp" |
-| `Footer` | `layouts/Footer.tsx` | Logo, links, contact, social icons |
-| `MainLayout` | `layouts/MainLayout.tsx` | Bọc: Header + children + Footer + ScrollProgress + Sticky CTA + BackToTop |
+**Code tham khảo:** Xem **mục 6.13**, **mục 6.14**.
 
 ---
 
-### Bước 5: Hooks
+### Bước 3: Layouts (Header, Footer, MainLayout)
 
-| Hook | Đường dẫn | Chức năng |
-|------|-----------|-----------|
-| `useScrollProgress` | `shared/hooks/useScrollProgress.ts` | Trả về % scroll (0–100) cho progress bar |
-| `useRevealOnScroll` | `shared/hooks/useRevealOnScroll.ts` | IntersectionObserver để reveal khi scroll |
-| `useScrollVisibility` | `shared/hooks/useScrollVisibility.ts` | Hiển thị CTA bar, BackToTop khi scroll > ngưỡng |
+**Làm gì:** Dựng Header, Footer và MainLayout bọc tất cả.
 
----
+1. Tạo `src/layouts/Header.tsx` — copy JSX từ **mục 6.3**
+2. Tạo `src/layouts/Footer.tsx` — copy JSX từ **mục 6.12**
+3. Tạo `src/layouts/MainLayout.tsx`:
+  ```tsx
+   export function MainLayout({ children }: { children: React.ReactNode }) {
+     return (
+       <>
+         <ScrollProgress />
+         <Header />
+         <main>{children}</main>
+         <Footer />
+         <StickyCTABar />
+         <BackToTop />
+       </>
+     );
+   }
+  ```
 
-### Bước 6: Các section trong HomePage
-
-Chia HomePage thành các section nhỏ (component con):
-
-| Section | Đường dẫn | Mô tả |
-|---------|-----------|-------|
-| `HeroSection` | `features/product/components/HeroSection.tsx` | Hero + headline + CTA + mockup |
-| `CategorySection` | `features/product/components/CategorySection.tsx` | Lãng mạn, Sang trọng, Hiện đại... |
-| `TemplateSection` | `features/product/components/TemplateSection.tsx` | Grid mẫu thiệp (Peony Dream, Golden Ring...) |
-| `TrendingSection` | `features/product/components/TrendingSection.tsx` | FOMO cards |
-| `HowItWorksSection` | `features/product/components/HowItWorksSection.tsx` | 3 bước + 4 điểm mạnh |
-| `GallerySection` | `features/product/components/GallerySection.tsx` | Masonry gallery |
-| `TestimonialsSection` | `features/product/components/TestimonialsSection.tsx` | 3 review |
-| `CTASection` | `features/product/components/CTASection.tsx` | Form email + CTA |
-| `StickyCTABar` | `shared/components/StickyCTABar.tsx` | Bar dính dưới khi scroll qua templates |
+**Code tham khảo:** **mục 6.3** (Header), **mục 6.12** (Footer).
 
 ---
 
-### Bước 7: Trang chủ (Page)
+### Bước 4: HeroSection
 
-**File:** `src/pages/HomePage.tsx`
+**Làm gì:** Tạo section hero đầu trang.
 
-```tsx
-// Cấu trúc
-<MainLayout>
-  <HeroSection />
-  <CategorySection />
-  <TemplateSection />
-  <TrendingSection />
-  <HowItWorksSection />
-  <GallerySection />
-  <TestimonialsSection />
-  <CTASection />
-</MainLayout>
-```
+1. Tạo `src/features/home/components/HeroSection.tsx`
+2. Copy JSX từ **mục 6.4**
+3. Đổi Phosphor web (`<i class="ph-fill ph-users-three">`) sang React: `import { UsersThree } from '@phosphor-icons/react'` và dùng `<UsersThree weight="fill" />`
+4. Đường dẫn ảnh: `/imgs/logo/result_logoAvi.png` và `/imgs/logo/Gemini_Generated_Image_*.png` (đảm bảo file tồn tại trong `public/imgs/logo/`)
 
 ---
 
-### Bước 8: Router
+### Bước 5: CategorySection
 
-**File:** `src/app/router/`
+**Làm gì:** Section phong cách (Lãng mạn, Sang trọng...).
 
-- Route `/` → `HomePage`
-- Có thể dùng React Router hoặc TanStack Router
-- Lazy load các trang để tối ưu
+1. Tạo `src/features/home/components/CategorySection.tsx`
+2. Copy logic từ **mục 6.5**
+3. Dùng Phosphor React: `Heart`, `Diamond`, `Sparkle`, `Circle`, `Scroll`
+4. Dùng số tĩnh: 24 mẫu, 18 mẫu... hardcode trong JSX
 
 ---
 
-## 3. Thứ tự triển khai gợi ý
+### Bước 6: TemplateSection
 
-```
-1. tailwind.config.js + globals.css + fonts
-2. shared/components/Button, Reveal, ScrollProgress, BackToTop
-3. layouts/Header, Footer, MainLayout
-4. shared/hooks/useScrollProgress, useRevealOnScroll
-5. HeroSection
-6. CategorySection
-7. TemplateSection (data mock)
-8. TrendingSection
-9. HowItWorksSection
-10. GallerySection
-11. TestimonialsSection
-12. CTASection + StickyCTABar
-13. HomePage ghép tất cả
-14. Router + App.tsx
-```
+**Làm gì:** Grid mẫu thiệp (Peony Dream, Golden Ring...).
+
+1. Tạo `src/features/home/components/TemplateSection.tsx`
+2. Copy cấu trúc từ **mục 6.6**
+3. Tạo mảng tĩnh 4 mẫu với: `title`, `image`, `style`, `usage`, `badge?` (Trending/Popular)
+4. Map mảng render card, không cần API
+
+---
+
+### Bước 7: TrendingSection
+
+**Làm gì:** Section đang thịnh hành (FOMO cards).
+
+1. Tạo `src/features/home/components/TrendingSection.tsx`
+2. Copy từ **mục 6.7**
+3. Mảng tĩnh 3 item: `title`, `image`, `count`, `badge` (live / sale)
+
+---
+
+### Bước 8: HowItWorksSection
+
+**Làm gì:** 3 bước + 4 điểm mạnh.
+
+1. Tạo `src/features/home/components/HowItWorksSection.tsx`
+2. Copy từ **mục 6.8**
+3. Dùng `Palette`, `CursorClick`, `PaperPlaneRight`, `Images`, `MagicWand`, `RocketLaunch`, `DeviceMobile` từ Phosphor React
+
+---
+
+### Bước 9: GallerySection
+
+**Làm gì:** Masonry gallery.
+
+1. Tạo `src/features/home/components/GallerySection.tsx`
+2. Copy từ **mục 6.9**
+3. Mảng tĩnh `galleryImages`: `{ src, label? }` — 6 URL ảnh Unsplash như trong HTML
+
+---
+
+### Bước 10: TestimonialsSection
+
+**Làm gì:** 3 đánh giá khách hàng.
+
+1. Tạo `src/features/home/components/TestimonialsSection.tsx`
+2. Copy từ **mục 6.10**
+3. Mảng tĩnh: `quote`, `name`, `role`, `date`, `avatar`
+
+---
+
+### Bước 11: CTASection
+
+**Làm gì:** Form email + CTA.
+
+1. Tạo `src/features/home/components/CTASection.tsx`
+2. Copy từ **mục 6.11**
+3. Form `onSubmit={(e) => e.preventDefault()}` — chưa xử lý gửi email
+
+---
+
+### Bước 12: HomePage + Router
+
+**Làm gì:** Ghép tất cả sections và cấu hình route.
+
+1. Tạo `src/pages/HomePage.tsx`:
+  ```tsx
+   import { MainLayout } from '@/layouts/MainLayout';
+   import { HeroSection } from '@/features/home/components/HeroSection';
+   // ... import các section khác
+
+   export function HomePage() {
+     return (
+       <MainLayout>
+         <HeroSection />
+         <CategorySection />
+         <TemplateSection />
+         <TrendingSection />
+         <HowItWorksSection />
+         <GallerySection />
+         <TestimonialsSection />
+         <CTASection />
+       </MainLayout>
+     );
+   }
+  ```
+2. Tạo `src/app/router/index.tsx` (hoặc cấu hình trong `App.tsx`):
+  ```tsx
+   import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+   import { HomePage } from '@/pages/HomePage';
+
+   const router = createBrowserRouter([
+     { path: '/', element: <HomePage /> },
+   ]);
+
+   export function AppRouter() {
+     return <RouterProvider router={router} />;
+   }
+  ```
+3. Trong `App.tsx`, render `<AppRouter />`
+4. Cấu hình alias `@` trong `vite.config.ts` và `tsconfig` nếu chưa có:
+  ```ts
+   // vite.config.ts
+   resolve: { alias: { '@': '/src' } }
+  ```
+
+---
+
+## 3. Thứ tự triển khai (tóm tắt)
+
+
+| #   | Bước                | File / thư mục chính                                                 |
+| --- | ------------------- | -------------------------------------------------------------------- |
+| 0   | Cài đặt             | `npm install tailwindcss @phosphor-icons/react react-router-dom`     |
+| 1   | Styles & Theme (v4) | `@theme` trong `globals.css`, `vite.config.ts` + `@tailwindcss/vite` |
+| 2   | Hooks UI            | `useScrollProgress`, `ScrollProgress`, `BackToTop`, `StickyCTABar`   |
+| 3   | Layouts             | `Header.tsx`, `Footer.tsx`, `MainLayout.tsx`                         |
+| 4   | HeroSection         | `features/home/components/HeroSection.tsx`                           |
+| 5   | CategorySection     | `CategorySection.tsx`                                                |
+| 6   | TemplateSection     | `TemplateSection.tsx`                                                |
+| 7   | TrendingSection     | `TrendingSection.tsx`                                                |
+| 8   | HowItWorksSection   | `HowItWorksSection.tsx`                                              |
+| 9   | GallerySection      | `GallerySection.tsx`                                                 |
+| 10  | TestimonialsSection | `TestimonialsSection.tsx`                                            |
+| 11  | CTASection          | `CTASection.tsx`                                                     |
+| 12  | HomePage + Router   | `HomePage.tsx`, `app/router/index.tsx`, `App.tsx`                    |
+
 
 ---
 
@@ -166,7 +344,7 @@ Chia HomePage thành các section nhỏ (component con):
 - **Ảnh trong code**: Dùng `import logo from '@/assets/images/logo/result_logoAvi.png'`
 - **Ảnh public**: Đặt trong `public/imgs/` và dùng `/imgs/logo/result_logoAvi.png`
 - **Phosphor Icons**: Dùng `<Heart />`, `<UsersThree />` thay cho `<i class="ph ph-heart">`
-- **Data mock**: Tạo `features/product/data/templates.ts`, `testimonials.ts` trước khi kết nối API
+- **Data mock**: Tạo `features/home/data/templates.ts`, `testimonials.ts` trước khi kết nối API (khi cần)
 - **Animations**: Giữ keyframes trong CSS, điều khiển class bằng `useRevealOnScroll` và state
 
 ---
@@ -179,7 +357,7 @@ src/
 │   └── router/
 │       └── index.tsx
 ├── features/
-│   └── product/
+│   └── home/
 │       ├── components/
 │       │   ├── HeroSection.tsx
 │       │   ├── CategorySection.tsx
@@ -219,35 +397,33 @@ src/
 
 ## 6. Code tham khảo theo từng phần
 
-### 6.1. tailwind.config.js
+### 6.1. Tailwind v4 — @theme (trong globals.css)
 
-```js
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        serif: ['Playfair Display', 'serif'],
-      },
-      colors: {
-        cream: '#FFF8F8',
-        rose: '#E11D48',
-        softpink: '#F9A8D4',
-        lightrose: '#FDE2E4',
-        gold: '#C9A227',
-        slate: '#334155',
-      },
-      boxShadow: {
-        soft: '0 20px 40px -15px rgba(225, 29, 72, 0.08)',
-        card: '0 10px 30px -10px rgba(51, 65, 85, 0.05)',
-      },
-    },
-  },
-  plugins: [],
+Tailwind v4 không dùng `tailwind.config.js`. Cấu hình theme trong CSS bằng `@theme`:
+
+```css
+@import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+
+  /* Colors */
+  --color-cream: #FFF8F8;
+  --color-rose: #E11D48;
+  --color-softpink: #F9A8D4;
+  --color-lightrose: #FDE2E4;
+  --color-gold: #C9A227;
+  --color-slate: #334155;
+
+  /* Box shadow */
+  --shadow-soft: 0 20px 40px -15px rgba(225, 29, 72, 0.08);
+  --shadow-card: 0 10px 30px -10px rgba(51, 65, 85, 0.05);
 }
 ```
+
+Sau khi khai báo, dùng các class như: `bg-cream`, `text-rose`, `font-serif`, `shadow-soft`, `shadow-card`.
 
 ---
 
