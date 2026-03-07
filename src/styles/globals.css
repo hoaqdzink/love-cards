@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+
+  /* Colors */
+  --color-cream: #FFF8F8;
+  --color-rose: #E11D48;
+  --color-softpink: #F9A8D4;
+  --color-lightrose: #FDE2E4;
+  --color-gold: #C9A227;
+  --color-slate: #334155;
+
+  /* Box shadow */
+  --shadow-soft: 0 20px 40px -15px rgba(225, 29, 72, 0.08);
+  --shadow-card: 0 10px 30px -10px rgba(51, 65, 85, 0.05);
+}
+
+body {
+    background-color: #FFF8F8;
+    color: #334155;
+    scroll-behavior: smooth;
+  }
+  
+  @keyframes fadeInLoad {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-load {
+    animation: fadeInLoad 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  @keyframes floating {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+  }
+  .animate-floating {
+    animation: floating 6s ease-in-out infinite;
+  }
+  
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+  }
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .masonry {
+    column-count: 2;
+    column-gap: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .masonry { column-count: 3; }
+  }
+  @media (min-width: 1024px) {
+    .masonry { column-count: 4; }
+  }
+  .masonry > div {
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
+  }
+  
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #E11D48, #C9A227);
+    z-index: 9999;
+    transform-origin: left;
+  }
+  
+  .cta-bar {
+    position: fixed;
+    bottom: -100px;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    transition: bottom 0.4s ease;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.08);
+  }
+  .cta-bar.visible {
+    bottom: 0;
+  }
+  
+  .back-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+  }
+  .back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .pulse-dot {
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
