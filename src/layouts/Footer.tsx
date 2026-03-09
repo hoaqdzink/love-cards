@@ -26,7 +26,7 @@ export function Footer() {
         <div>
             <h4 className="font-bold text-softpink mb-6 text-sm uppercase tracking-wider">Liên Hệ</h4>
             <ul className="space-y-3 text-sm text-white/70 font-light">
-            <li>📧 hello@lovecards.vn</li>
+            <li>📧 contact@lovecards.vn</li>
             <li>📞 03999 89 849</li>
             </ul>
         </div>
