@@ -20,7 +20,6 @@ export function HowItWorksSection() {
                     </div>
                     <h3 className="text-lg font-bold text-slate mb-2">{step.title}</h3>
                     <p className="text-sm text-slate/60 mb-6">{step.desc}</p>
-                    <a href="#templates" className="text-rose text-sm font-medium hover:underline">Bắt đầu chọn →</a>
                 </div>
                 ))}
             </div>

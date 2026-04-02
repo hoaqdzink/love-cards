@@ -7,7 +7,7 @@ export function HeroSection() {
         <div className="absolute top-20 left-10 w-72 h-72 bg-softpink rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" />
         <div className="absolute top-40 right-20 w-72 h-72 bg-gold rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse" style={{ animationDelay: '1s' }} />
 
-        <div className="max-w-7xl mx-auto px-6 w-full grid md:grid-cols-2 gap-12 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full min-w-0 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             <div className="space-y-8 z-10 animate-load">
             <div className="flex flex-wrap items-center gap-3">
                 <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-lightrose text-gold text-xs font-semibold uppercase tracking-widest shadow-sm">
@@ -18,7 +18,7 @@ export function HeroSection() {
                 <strong className="text-slate">10.000+</strong> cặp đôi tin dùng
                 </span>
             </div>
-            <h1 className="text-5xl lg:text-6xl font-serif font-bold leading-tight text-slate">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold leading-tight text-slate break-words">
                 Khám phá những mẫu thiệp cưới <br />
                 <span className="italic font-normal text-rose">đẹp và tinh tế</span>
             </h1>
