@@ -1,0 +1,30 @@
+{
+  "app": {
+    "name": "Love Cards"
+  },
+  "nav": {
+    "home": "Home",
+    "catalog": "Catalog",
+    "cart": "Cart",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "myCards": "My Cards"
+  },
+  "actions": {
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now",
+    "preview": "Preview",
+    "share": "Share",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next"
+  },
+  "messages": {
+    "addedToCart": "Added to cart",
+    "error": "An error occurred, please try again",
+    "loading": "Loading..."
+  }
+}

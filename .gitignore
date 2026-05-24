@@ -1,0 +1,36 @@
+# ============ OS ============
+.DS_Store
+Thumbs.db
+
+# ============ IDE ============
+.idea/
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ============ Environment ============
+.env
+.env.*
+!.env.example
+
+# ============ Logs ============
+logs/
+*.log
+
+# ============ Backend (Java/Maven) ============
+Backend/**/target/
+Backend/**/*.jar
+Backend/**/*.class
+Backend/logs/
+
+# ============ Frontend (Node/Vite) ============
+Frontend/node_modules/
+Frontend/dist/
+Frontend/dist-ssr/
+*.local
+
+# ============ Docker ============
+docker-compose.override.yml

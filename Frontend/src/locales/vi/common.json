@@ -1,0 +1,30 @@
+{
+  "app": {
+    "name": "Love Cards"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "catalog": "Danh mục",
+    "cart": "Giỏ hàng",
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "logout": "Đăng xuất",
+    "myCards": "Thiệp của tôi"
+  },
+  "actions": {
+    "addToCart": "Thêm vào giỏ",
+    "buyNow": "Mua ngay",
+    "preview": "Xem trước",
+    "share": "Chia sẻ",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "confirm": "Xác nhận",
+    "back": "Quay lại",
+    "next": "Tiếp tục"
+  },
+  "messages": {
+    "addedToCart": "Đã thêm vào giỏ hàng",
+    "error": "Đã xảy ra lỗi, vui lòng thử lại",
+    "loading": "Đang tải..."
+  }
+}

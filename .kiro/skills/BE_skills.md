@@ -862,6 +862,86 @@ AI Agent KHÔNG được:
 
 ---
 
+## Documentation Sync Rules
+
+### Nguyên tắc chung
+Khi thực hiện thay đổi Backend, AI Agent **BẮT BUỘC** phải kiểm tra và đề xuất cập nhật tài liệu liên quan. **KHÔNG được tự ý cập nhật** — phải hỏi user và đưa ra các options để user chọn.
+
+### Khi nào cập nhật README (`Backend/README.md`)
+
+Cập nhật README khi có bất kỳ thay đổi nào sau:
+- **Thêm/xóa/đổi tên service** → cập nhật "Cấu trúc dự án", "Chi tiết từng Module", "API Gateway Routing"
+- **Thay đổi port** → cập nhật bảng port trong "Cấu trúc dự án"
+- **Thêm/xóa database schema hoặc table** → cập nhật bảng "Database"
+- **Thêm route mới ở Gateway** → cập nhật "API Gateway Routing"
+- **Thay đổi tech stack** (thêm dependency lớn, đổi message broker, đổi DB) → cập nhật "Tech Stack"
+- **Thay đổi cách chạy/build** → cập nhật "Hướng dẫn chạy"
+- **Thêm infrastructure mới** (thêm container trong docker-compose) → cập nhật "Yêu cầu hệ thống" và "Hướng dẫn chạy"
+
+### Khi nào cập nhật tài liệu nghiệp vụ (`docs/`)
+
+Cập nhật tài liệu trong `docs/` khi thay đổi **ảnh hưởng đến nghiệp vụ (BRD)**:
+- **Thêm/xóa/sửa feature** → cập nhật `docs/business-docs/LoveCards-BRD-v1.0.md`
+- **Thay đổi user flow** → cập nhật `docs/business-docs/LoveCards-UserStories-v1.0.md`
+- **Thay đổi domain model** (thêm entity, đổi relationship) → cập nhật `docs/technical-docs/LoveCards-DomainModel-v1.0.md`
+- **Thay đổi database schema** → cập nhật `docs/technical-docs/LoveCards-Database-v1.0.dbml`
+- **Thay đổi functional flow** → cập nhật `docs/technical-docs/LoveCards-FunctionalDesign-v1.0.md`
+- **Thay đổi implementation plan** → cập nhật `docs/implementation/`
+
+### Mapping file tài liệu
+
+| Loại thay đổi | File cần cập nhật |
+|---------------|-------------------|
+| Thêm/xóa service, đổi cấu trúc | `Backend/README.md` |
+| Thêm/sửa feature nghiệp vụ | `docs/business-docs/LoveCards-BRD-v1.0.md` |
+| Thay đổi user story/flow | `docs/business-docs/LoveCards-UserStories-v1.0.md` |
+| Thay đổi domain/entity | `docs/technical-docs/LoveCards-DomainModel-v1.0.md` |
+| Thay đổi DB schema | `docs/technical-docs/LoveCards-Database-v1.0.dbml` |
+| Thay đổi functional design | `docs/technical-docs/LoveCards-FunctionalDesign-v1.0.md` |
+| Thay đổi kế hoạch triển khai | `docs/implementation/LoveCards-ImplementationPlan-v1.0.md` |
+
+### Hành vi bắt buộc của AI Agent
+
+1. **Sau khi hoàn thành code changes**, AI Agent phải tự đánh giá xem thay đổi có ảnh hưởng đến tài liệu nào không.
+2. **Nếu có ảnh hưởng**, AI Agent phải:
+   - Liệt kê các file tài liệu cần cập nhật
+   - Mô tả ngắn gọn nội dung cần thay đổi ở mỗi file
+   - Đưa ra **options** (ví dụ: A. Cập nhật tất cả / B. Chỉ cập nhật README / C. Bỏ qua)
+   - **CHỜ user chọn** trước khi thực hiện
+3. **Nếu mơ hồ** (không chắc thay đổi có ảnh hưởng nghiệp vụ hay không), AI Agent phải:
+   - Nêu rõ điểm mơ hồ
+   - Đưa ra 2-3 options giải thích rõ hệ quả của mỗi lựa chọn
+   - **KHÔNG tự đưa ra quyết định**
+
+### Ví dụ hành vi đúng
+
+```
+✅ Đúng:
+"Tôi vừa thêm `coupon-service` (port 8087). Các tài liệu cần cập nhật:
+1. Backend/README.md — thêm module mới vào cấu trúc, routing, database
+2. docs/business-docs/LoveCards-BRD-v1.0.md — thêm feature coupon/voucher
+
+Bạn muốn:
+A. Cập nhật cả README và BRD
+B. Chỉ cập nhật README (chưa finalize nghiệp vụ coupon)
+C. Bỏ qua, tôi sẽ cập nhật sau"
+
+❌ Sai:
+- Tự cập nhật README mà không hỏi
+- Tự sửa BRD mà không confirm nội dung
+- Bỏ qua không nhắc user về tài liệu cần cập nhật
+```
+
+### Forbidden Actions (Documentation)
+
+AI Agent **KHÔNG ĐƯỢC**:
+- Tự ý cập nhật bất kỳ file tài liệu nào mà không hỏi user
+- Tự quyết định nội dung nghiệp vụ khi chưa được confirm
+- Bỏ qua bước kiểm tra tài liệu sau khi hoàn thành code changes
+- Đưa ra 1 option duy nhất và tự chọn
+
+---
+
 ## Checklist trước khi hoàn thành task
 
 - [ ] Code tuân thủ project structure và naming convention.
@@ -879,3 +959,4 @@ AI Agent KHÔNG được:
 - [ ] Backward-compatible nếu sửa API đang có consumer.
 - [ ] Docker build thành công.
 - [ ] Health check endpoint hoạt động.
+- [ ] **Đã kiểm tra và đề xuất cập nhật tài liệu (README, docs/) nếu cần.**
