@@ -12,6 +12,9 @@ logs/
 .env.*
 !.env.example
 
+# MinIO local data
+minio-data/
+
 # IDE
 .idea/
 *.iml
