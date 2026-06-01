@@ -26,5 +26,97 @@
     "addedToCart": "Đã thêm vào giỏ hàng",
     "error": "Đã xảy ra lỗi, vui lòng thử lại",
     "loading": "Đang tải..."
+  },
+  "home": {
+    "categories": {
+      "eyebrow": "Danh mục",
+      "title": "Lựa Chọn Dành Cho Bạn",
+      "description": "Chọn loại sự kiện phù hợp và khám phá nhanh các mẫu thiệp đang có",
+      "count": "{{count}} mẫu"
+    },
+    "templates": {
+      "title": "Mẫu Thiệp Nổi Bật",
+      "description": "Khám phá các thiết kế được yêu thích nhất.",
+      "mobileHint": "Trên điện thoại: chạm vào vùng xem trước hoặc phần tiêu đề/mô tả để bật/tắt hiệu ứng.",
+      "viewAll": "Xem tất cả"
+    },
+    "trending": {
+      "title": "Đang thịnh hành",
+      "subtitle": "Cập nhật từ dữ liệu API",
+      "error": "Chưa tải được mẫu thịnh hành, vui lòng thử lại sau."
+    }
+  },
+  "catalog": {
+    "eyebrow": "Thư viện mẫu",
+    "title": "Khám phá mẫu thiệp",
+    "description": "Tìm kiếm, lọc theo loại sự kiện và màu sắc để chọn mẫu phù hợp nhất.",
+    "resultCount": "Hiển thị {{from}}-{{to}} / {{total}} mẫu",
+    "search": {
+      "label": "Tìm kiếm mẫu",
+      "placeholder": "Tìm theo tên hoặc mô tả, ví dụ: rose, cưới..."
+    },
+    "filters": {
+      "title": "Bộ lọc",
+      "reset": "Xóa bộ lọc",
+      "eventType": "Loại sự kiện",
+      "color": "Màu sắc",
+      "events": {
+        "wedding": "Đám cưới",
+        "birthday": "Sinh nhật",
+        "party": "Tiệc",
+        "other": "Khác"
+      },
+      "colors": {
+        "pink": "Hồng",
+        "white": "Trắng",
+        "gold": "Vàng",
+        "blue": "Xanh",
+        "purple": "Tím",
+        "green": "Xanh lá",
+        "red": "Đỏ"
+      }
+    },
+    "sort": {
+      "label": "Sắp xếp",
+      "popular": "Phổ biến nhất",
+      "newest": "Mới nhất",
+      "priceAsc": "Giá tăng dần",
+      "priceDesc": "Giá giảm dần"
+    },
+    "badges": {
+      "featured": "Nổi bật",
+      "trending": "Trending"
+    },
+    "card": {
+      "views": "lượt xem"
+    },
+    "cart": {
+      "developing": "Tính năng đang phát triển"
+    },
+    "states": {
+      "loading": {
+        "title": "Đang tải mẫu thiệp",
+        "description": "Vui lòng chờ trong giây lát."
+      },
+      "error": {
+        "title": "Chưa tải được dữ liệu",
+        "description": "Có lỗi khi kết nối API. Bạn có thể thử lại.",
+        "retry": "Thử lại"
+      },
+      "empty": {
+        "title": "Không tìm thấy mẫu phù hợp",
+        "description": "Thử đổi từ khóa hoặc xóa bớt bộ lọc."
+      }
+    },
+    "pagination": {
+      "label": "Phân trang mẫu thiệp",
+      "previous": "Trước",
+      "next": "Sau"
+    },
+    "preview": {
+      "backToCatalog": "Quay lại danh mục mẫu",
+      "iframeTitle": "Xem trước {{name}}",
+      "fieldsTitle": "Trường có thể tùy chỉnh"
+    }
   }
 }

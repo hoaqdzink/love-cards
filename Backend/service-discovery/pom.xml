@@ -10,6 +10,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+    <!--
+      Module Eureka Server: registry cho toàn bộ microservices Love Cards.
+      Phụ thuộc spring-cloud-starter-netflix-eureka-server; không chứa business logic.
+    -->
     <artifactId>service-discovery</artifactId>
     <name>Service Discovery</name>
     <description>Eureka Server for service registration and discovery</description>

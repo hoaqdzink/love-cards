@@ -26,5 +26,97 @@
     "addedToCart": "Added to cart",
     "error": "An error occurred, please try again",
     "loading": "Loading..."
+  },
+  "home": {
+    "categories": {
+      "eyebrow": "Categories",
+      "title": "Find Your Best Fit",
+      "description": "Choose an event type and quickly explore matching invitation templates.",
+      "count": "{{count}} templates"
+    },
+    "templates": {
+      "title": "Featured Templates",
+      "description": "Explore the most loved designs.",
+      "mobileHint": "On mobile: tap the preview area or title section to toggle the preview animation.",
+      "viewAll": "View all"
+    },
+    "trending": {
+      "title": "Trending",
+      "subtitle": "Updated from API data",
+      "error": "Trending templates could not be loaded. Please try again later."
+    }
+  },
+  "catalog": {
+    "eyebrow": "Template Library",
+    "title": "Explore Invitation Templates",
+    "description": "Search and filter by event type and colors to find the best template.",
+    "resultCount": "Showing {{from}}-{{to}} / {{total}} templates",
+    "search": {
+      "label": "Search templates",
+      "placeholder": "Search by name or description, e.g. rose, wedding..."
+    },
+    "filters": {
+      "title": "Filters",
+      "reset": "Clear filters",
+      "eventType": "Event type",
+      "color": "Colors",
+      "events": {
+        "wedding": "Wedding",
+        "birthday": "Birthday",
+        "party": "Party",
+        "other": "Other"
+      },
+      "colors": {
+        "pink": "Pink",
+        "white": "White",
+        "gold": "Gold",
+        "blue": "Blue",
+        "purple": "Purple",
+        "green": "Green",
+        "red": "Red"
+      }
+    },
+    "sort": {
+      "label": "Sort",
+      "popular": "Most popular",
+      "newest": "Newest",
+      "priceAsc": "Price low to high",
+      "priceDesc": "Price high to low"
+    },
+    "badges": {
+      "featured": "Featured",
+      "trending": "Trending"
+    },
+    "card": {
+      "views": "views"
+    },
+    "cart": {
+      "developing": "This feature is in development"
+    },
+    "states": {
+      "loading": {
+        "title": "Loading templates",
+        "description": "Please wait a moment."
+      },
+      "error": {
+        "title": "Could not load data",
+        "description": "There was an API connection error. You can retry.",
+        "retry": "Retry"
+      },
+      "empty": {
+        "title": "No matching templates",
+        "description": "Try another keyword or remove some filters."
+      }
+    },
+    "pagination": {
+      "label": "Template pagination",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "preview": {
+      "backToCatalog": "Back to catalog",
+      "iframeTitle": "Preview {{name}}",
+      "fieldsTitle": "Customizable fields"
+    }
   }
 }

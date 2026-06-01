@@ -1,3 +1,6 @@
+# Cấu hình Eureka Server (service-discovery)
+# Port 8761 là convention của Netflix Eureka; các microservice trỏ EUREKA_URL về đây.
+
 server:
   port: 8761
 
@@ -5,6 +8,7 @@ spring:
   application:
     name: service-discovery
 
+# Eureka chạy ở chế độ standalone: chỉ làm registry, không tự đăng ký / không fetch danh sách peer.
 eureka:
   instance:
     hostname: localhost

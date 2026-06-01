@@ -43,8 +43,8 @@ function toQueryString(params?: Record<string, unknown>): string {
 }
 
 export const api = {
-  get: <T>(url: string, params?: Record<string, unknown>) =>
-    request<T>(url + toQueryString(params)),
+  get: <T>(url: string, params?: Record<string, unknown>, headers?: HeadersInit) =>
+    request<T>(url + toQueryString(params), { headers }),
   post: <T>(url: string, body?: unknown) =>
     request<T>(url, { method: 'POST', body: JSON.stringify(body) }),
   put: <T>(url: string, body?: unknown) =>

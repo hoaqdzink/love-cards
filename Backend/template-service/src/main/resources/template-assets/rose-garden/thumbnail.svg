@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480" role="img" aria-label="Rose Garden thumbnail">
+  <rect width="640" height="480" fill="#22090d"/>
+  <rect x="28" y="28" width="584" height="424" fill="none" stroke="#c9a227" stroke-width="16"/>
+  <circle cx="320" cy="205" r="92" fill="#c9184a"/>
+  <text x="320" y="350" text-anchor="middle" font-family="Georgia, serif" font-size="46" fill="#fff8ef">Rose Garden</text>
+</svg>

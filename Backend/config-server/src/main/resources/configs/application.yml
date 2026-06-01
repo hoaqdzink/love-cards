@@ -36,6 +36,15 @@ management:
     health:
       show-details: when-authorized
 
+springdoc:
+  api-docs:
+    enabled: ${SWAGGER_ENABLED:true}
+  swagger-ui:
+    enabled: ${SWAGGER_ENABLED:true}
+
+openapi:
+  gateway-url: ${API_GATEWAY_URL:http://localhost:8080}
+
 # ============ Object Storage (S3-compatible) ============
 # MinIO local (dev) — tương thích 100% S3 API
 # Khi deploy production: đổi giá trị trong .env hoặc environment variables

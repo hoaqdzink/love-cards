@@ -6,7 +6,7 @@ import logo from '@/assets/images/logo/result_logoAvi.png';
 
 const NAV_LINKS = [
   { href: '/', label: 'Trang chủ' },
-  { href: '#templates', label: 'Mẫu thiệp' },
+  { href: '/mau-thiep', label: 'Mẫu thiệp' },
   { href: '#trending', label: 'Đang hot' },
   { href: '#gallery', label: 'Bộ sưu tập' },
   { href: '#how-it-works', label: 'Giới thiệu' },
@@ -64,7 +64,7 @@ export function Header() {
               <div className="flex flex-col flex-1 overflow-y-auto overscroll-contain px-4 py-4 gap-1 min-h-0">
                 <nav className="flex flex-col gap-1" aria-label="Liên kết trang">
                   {NAV_LINKS.map(({ href, label }) =>
-                    href === '/' ? (
+                    href.startsWith('/') ? (
                       <Link
                         key={href}
                         to={href}
@@ -85,13 +85,13 @@ export function Header() {
                     ),
                   )}
                 </nav>
-                <a
-                  href="#templates"
+                <Link
+                  to="/mau-thiep"
                   className="mt-6 mx-1 py-3 text-center rounded-full bg-rose text-white text-sm font-medium hover:bg-rose/90 shadow-md transition-colors"
                   onClick={closeMenu}
                 >
                   Xem mẫu thiệp
-                </a>
+                </Link>
               </div>
             </div>
           </>,
@@ -125,7 +125,7 @@ export function Header() {
             aria-label="Chính"
           >
             {NAV_LINKS.map(({ href, label }) =>
-              href === '/' ? (
+              href.startsWith('/') ? (
                 <Link key={href} to={href} className="hover:text-rose transition-colors whitespace-nowrap">
                   {label}
                 </Link>
@@ -138,13 +138,13 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-            <a
-              href="#templates"
+            <Link
+              to="/mau-thiep"
               onClick={closeMenu}
               className="hidden lg:inline-flex px-4 xl:px-6 py-2 sm:py-2.5 rounded-full bg-rose text-white text-sm font-medium hover:bg-rose/90 shadow-md hover:shadow-soft transition-all duration-300 whitespace-nowrap"
             >
               Xem mẫu thiệp
-            </a>
+            </Link>
 
             <button
               type="button"
