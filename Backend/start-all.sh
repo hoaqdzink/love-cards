@@ -5,6 +5,17 @@
 
 set -e
 
+if [ -f .env ]; then
+    set -a
+    # shellcheck disable=SC1091
+    source .env
+    set +a
+fi
+
+API_GATEWAY_PORT="${API_GATEWAY_PORT:-8080}"
+API_GATEWAY_URL="${API_GATEWAY_URL:-http://localhost:${API_GATEWAY_PORT}}"
+export API_GATEWAY_PORT API_GATEWAY_URL
+
 BLUE='\033[0;34m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -53,7 +64,7 @@ done
 echo -e "${GREEN}Config Server ready ✓${NC}"
 
 # 3. API Gateway
-echo -e "\n${YELLOW}[3/4] Starting API Gateway (port 8080)...${NC}"
+echo -e "\n${YELLOW}[3/4] Starting API Gateway (port ${API_GATEWAY_PORT})...${NC}"
 java -jar api-gateway/target/api-gateway-0.0.1-SNAPSHOT.jar > $LOG_DIR/api-gateway.log 2>&1 &
 echo "PID: $!"
 sleep 8
@@ -84,7 +95,7 @@ echo -e "${GREEN}   All services started!               ${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
 echo "Eureka Dashboard:  http://localhost:8761"
-echo "API Gateway:       http://localhost:8080"
+echo "API Gateway:       ${API_GATEWAY_URL}"
 echo "RabbitMQ UI:       http://localhost:15672"
 echo ""
 echo "Logs:              ./logs/*.log"

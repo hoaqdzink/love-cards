@@ -34,3 +34,10 @@ Frontend/dist-ssr/
 
 # ============ Docker ============
 docker-compose.override.yml
+
+# ============ Backend Windows scripts (local) ============
+Backend/start-all.ps1
+Backend/stop-all.ps1
+
+# ============ Local dev tools ============
+tools/

@@ -79,7 +79,7 @@ export function CheckoutPage() {
   return (
     <MainLayout>
       <div className="max-w-3xl mx-auto px-4 py-10 sm:py-14">
-        <h1 className="font-serif text-3xl text-slate">{t('checkout.title')}</h1>
+        <h1 className="font-serif text-2xl sm:text-3xl text-slate">{t('checkout.title')}</h1>
         <p className="mt-2 text-slate/70">{t('checkout.subtitle')}</p>
 
         <div className="mt-8 space-y-6">
@@ -111,17 +111,17 @@ export function CheckoutPage() {
         </div>
 
         <div className="mt-8 rounded-2xl border border-lightrose bg-lightrose/20 p-5">
-          <div className="flex justify-between text-slate">
-            <span>{t('checkout.templatesSubtotal')}</span>
-            <span>{formatVnd(subtotal)}</span>
+          <div className="flex justify-between gap-3 text-slate text-sm sm:text-base">
+            <span className="min-w-0">{t('checkout.templatesSubtotal')}</span>
+            <span className="shrink-0 tabular-nums">{formatVnd(subtotal)}</span>
           </div>
-          <div className="flex justify-between text-slate mt-2">
-            <span>{t('checkout.hostingSubtotal')}</span>
-            <span>{formatVnd(hostingTotal)}</span>
+          <div className="flex justify-between gap-3 text-slate mt-2 text-sm sm:text-base">
+            <span className="min-w-0">{t('checkout.hostingSubtotal')}</span>
+            <span className="shrink-0 tabular-nums">{formatVnd(hostingTotal)}</span>
           </div>
-          <div className="flex justify-between font-semibold text-slate mt-4 pt-4 border-t border-lightrose">
-            <span>{t('checkout.grandTotal')}</span>
-            <span>{formatVnd(grandTotal)}</span>
+          <div className="flex justify-between gap-3 font-semibold text-slate mt-4 pt-4 border-t border-lightrose text-sm sm:text-base">
+            <span className="min-w-0">{t('checkout.grandTotal')}</span>
+            <span className="shrink-0 tabular-nums">{formatVnd(grandTotal)}</span>
           </div>
         </div>
 

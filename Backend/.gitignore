@@ -27,3 +27,7 @@ minio-data/
 # Maven
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
+
+# Windows local scripts
+start-all.ps1
+stop-all.ps1

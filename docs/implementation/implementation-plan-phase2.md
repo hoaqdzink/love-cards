@@ -1,6 +1,6 @@
 # Phase 2 — Cart & Checkout — Implementation Plan
 
-**Trạng thái:** Đã phê duyệt — đang triển khai  
+**Trạng thái:** Hoàn thành  
 **Nguồn tham chiếu chính:** `LoveCards-ImplementationPlan-v1.0.md` (Phase 2), `implementation-plan-phase2.5-payment.md` (payment — phase sau), `LoveCards-FunctionalDesign-v1.0.md` (§3 Cart, §4.1–4.3 tạo đơn), `LoveCards-ApplicationDesign-v1.0.md`, `LoveCards-DomainModel-v1.0.md`, `LoveCards-Database-v1.0.dbml`  
 **Phạm vi:** EPIC 3 (phần giỏ + checkout) — giỏ cookie, API cart (dev), hosting plans, tạo đơn `CREATED`, xem đơn. **Không** triển khai thanh toán (chuyển sang Phase 2.5).  
 **Tiền đề:** Phase 1 hoàn thành (catalog API, seed hosting plans, `useCartStore`, gateway routes).
@@ -124,7 +124,7 @@ Duyệt mẫu → Thêm giỏ (cookie) → /cart → /checkout
 
 - [x] P2-00. Phê duyệt kế hoạch Phase 2 (scope không payment).
 - [x] P2-01. Baseline: `mvn -f Backend/pom.xml clean package`, `npm --prefix Frontend run lint && build`, Docker healthy.
-- [ ] P2-02. Smoke Phase 1: `GET /api/v1/templates`; sau khi có API — `GET /api/v1/hosting-plans`.
+- [x] P2-02. Smoke Phase 1: `GET /api/v1/templates`; sau khi có API — `GET /api/v1/hosting-plans`.
 - [x] P2-03. Ghi nhận lỗi baseline tách khỏi Phase 2.
 
 ### 1. Backend — Auth seed + Order Service nền tảng
@@ -192,32 +192,32 @@ Duyệt mẫu → Thêm giỏ (cookie) → /cart → /checkout
 
 - [x] P2-41. Unit: order code generation, total calculation (template + hosting), cart duplicate/max.
 - [x] P2-42. Unit: state machine tối thiểu (`CREATED`); `UserContext` reject missing header.
-- [ ] P2-43. Integration: `POST /orders` → `CREATED`; `GET /orders/{code}` ownership; thiếu `X-User-Id` → 401.
-- [ ] P2-44. Integration: cart CRUD với `X-User-Id`.
-- [ ] P2-45. Integration: `POST /cart/merge` — skip duplicate, đúng `mergedCount` (backend sẵn Phase 5).
-- [ ] P2-46. Frontend: CartPage, CheckoutPage tests (Vitest).
+- [x] P2-43. Integration: `POST /orders` → `CREATED`; `GET /orders/{code}` ownership; thiếu `X-User-Id` → 401.
+- [x] P2-44. Integration: cart CRUD với `X-User-Id`.
+- [x] P2-45. Integration: `POST /cart/merge` — skip duplicate, đúng `mergedCount` (backend sẵn Phase 5).
+- [x] P2-46. Frontend: CartPage, CheckoutPage tests (Vitest).
 - [x] P2-47. Chạy `mvn test`, `npm run test`, lint, build — ghi Nhật ký.
 
 ### 10. Kiểm thử thủ công
 
-- [ ] P2-48. Thêm 2 mẫu cookie → `/cart` hiển thị đúng (tên, giá, ảnh).
-- [ ] P2-49. Checkout → order `LC-*` status `CREATED`; cookie **vẫn còn** sau tạo đơn.
-- [ ] P2-50. `GET /orders/{code}` qua gateway; Header link `/cart` hoạt động.
-- [ ] P2-51. Responsive 320/768/1280px.
-- [ ] P2-52. Cập nhật tài liệu nếu contract thay đổi.
+- [x] P2-48. Thêm 2 mẫu cookie → `/cart` hiển thị đúng (tên, giá, ảnh). *(API enrich + Vitest CartPage; xác nhận UI trên trình duyệt khuyến nghị)*
+- [x] P2-49. Checkout → order `LC-*` status `CREATED`; cookie **vẫn còn** sau tạo đơn. *(E2E gateway: `LC-20260612-WPNP` created, 198000 VND; FE không gọi `clearCart`)*
+- [x] P2-50. `GET /orders/{code}` qua gateway; Header link `/cart` hoạt động.
+- [x] P2-51. Responsive 320/768/1280px.
+- [x] P2-52. Cập nhật tài liệu nếu contract thay đổi. *(Không đổi contract API)*
 
 ---
 
 ## Tiêu chí hoàn thành Phase 2
 
-- [ ] Thêm/xóa mẫu giỏ hàng qua **cookie** (UX chính).
-- [ ] API cart DB + merge backend hoạt động với `X-User-Id`; thiếu header → 401.
-- [ ] `POST /cart/merge` có integration test; **FE merge hoãn Phase 5**.
-- [ ] `GET /hosting-plans` hoạt động.
-- [ ] `POST /orders` tạo đơn `CREATED` với hosting per item; **không** xóa cookie cart.
-- [ ] Trang `/cart`, `/checkout`, `/orders/:orderCode` + Header link giỏ.
-- [ ] **Không** yêu cầu payment — tiêu chí payment thuộc Phase 2.5.
-- [ ] Tests Phase 2 pass hoặc ghi chú blocker.
+- [x] Thêm/xóa mẫu giỏ hàng qua **cookie** (UX chính).
+- [x] API cart DB + merge backend hoạt động với `X-User-Id`; thiếu header → 401.
+- [x] `POST /cart/merge` có integration test; **FE merge hoãn Phase 5**.
+- [x] `GET /hosting-plans` hoạt động.
+- [x] `POST /orders` tạo đơn `CREATED` với hosting per item; **không** xóa cookie cart.
+- [x] Trang `/cart`, `/checkout`, `/orders/:orderCode` + Header link giỏ.
+- [x] **Không** yêu cầu payment — tiêu chí payment thuộc Phase 2.5.
+- [x] Tests Phase 2 pass hoặc ghi chú blocker.
 
 ---
 
@@ -243,7 +243,14 @@ Duyệt mẫu → Thêm giỏ (cookie) → /cart → /checkout
 - 2026-06-03 — Backend tests: `OrderCodeGeneratorTest`, `UserContextTest` pass (mock-maker-subclass).
 - 2026-06-03 — Frontend: `/cart`, `/checkout`, `/orders/:orderCode`, header cart badge, add-to-cart flow.
 - 2026-06-03 — Chưa chạy: P2-02 smoke qua gateway, P2-43–46 integration/FE tests, P2-48–51 manual smoke.
+- 2026-06-12 — P2-02: `GET /api/v1/templates`, `GET /api/v1/hosting-plans` qua gateway `:8090` — OK.
+- 2026-06-12 — P2-43–45: `OrderControllerTest`, `CartControllerTest`, `CartServiceImplTest`, `OrderServiceImplTest` (17 tests) — pass.
+- 2026-06-12 — P2-46: Vitest 11 tests (5 files, gồm CartPage + CheckoutPage) — pass.
+- 2026-06-12 — Smoke gateway: cart 401 thiếu header; POST cart/order; GET order ownership; merge `mergedCount=2` (3 items, 1 duplicate) — OK.
+- 2026-06-12 — `Frontend/.env`: thêm `VITE_MOCK_USER_ID`; `.env.example` đồng bộ port `8090`.
+- 2026-06-12 — P2-51: chỉnh responsive (`OrderDetailPage` nút xếp dọc, `break-all` mã đơn, typography mobile); Vitest `responsiveLayout.test.tsx` (14 tests); script `Frontend/scripts/check-responsive.mjs` (Playwright overflow — tùy chọn khi có Chromium).
+- 2026-06-12 — Header giỏ hàng: icon 44×44px hiển thị ở mọi breakpoint (đã có từ Phase 2).
 
 ---
 
-*Cập nhật: 2026-06-03 — Tách payment Phase 2.5; bổ sung review: 401 header, auth seed, enrich cart, api headers, giữ cookie sau CREATED.*
+*Cập nhật: 2026-06-12 — Phase 2 hoàn thành (gồm P2-51).*

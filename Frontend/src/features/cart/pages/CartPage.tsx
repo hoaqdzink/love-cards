@@ -13,7 +13,7 @@ export function CartPage() {
   return (
     <MainLayout>
       <div className="max-w-4xl mx-auto px-4 py-10 sm:py-14">
-        <h1 className="font-serif text-3xl text-slate">{t('cart.title')}</h1>
+        <h1 className="font-serif text-2xl sm:text-3xl text-slate">{t('cart.title')}</h1>
         <p className="mt-2 text-slate/70">{t('cart.subtitle', { count: itemCount })}</p>
 
         {itemCount === 0 ? (
@@ -32,7 +32,7 @@ export function CartPage() {
             {lines.map((line) => (
               <div
                 key={line.templateId}
-                className="flex gap-4 rounded-2xl border border-lightrose bg-white p-4 sm:p-5"
+                className="flex items-start gap-3 sm:gap-4 rounded-2xl border border-lightrose bg-white p-4 sm:p-5"
               >
                 {line.template?.thumbnailUrl ? (
                   <img

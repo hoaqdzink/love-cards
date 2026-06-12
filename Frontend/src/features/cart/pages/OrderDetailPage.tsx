@@ -30,7 +30,7 @@ export function OrderDetailPage() {
         ) : (
           <>
             <p className="text-sm uppercase tracking-wide text-rose font-medium">{t('order.confirmed')}</p>
-            <h1 className="font-serif text-3xl text-slate mt-2">{order.orderCode}</h1>
+            <h1 className="font-serif text-2xl sm:text-3xl text-slate mt-2 break-all">{order.orderCode}</h1>
             <p className="mt-2 text-slate/70">
               {t('order.status')}: <span className="font-medium text-slate">{order.status}</span>
             </p>
@@ -56,16 +56,16 @@ export function OrderDetailPage() {
               ))}
             </ul>
 
-            <div className="mt-8 flex gap-3">
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <Link
                 to="/mau-thiep"
-                className="inline-flex px-6 py-2.5 rounded-full border border-lightrose text-slate hover:bg-white"
+                className="inline-flex justify-center px-6 py-2.5 rounded-full border border-lightrose text-slate hover:bg-white"
               >
                 {t('order.continueShopping')}
               </Link>
               <Link
                 to="/cart"
-                className="inline-flex px-6 py-2.5 rounded-full bg-rose text-white hover:bg-rose/90"
+                className="inline-flex justify-center px-6 py-2.5 rounded-full bg-rose text-white hover:bg-rose/90"
               >
                 {t('cart.title')}
               </Link>
