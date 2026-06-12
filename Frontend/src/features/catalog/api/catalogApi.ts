@@ -43,6 +43,11 @@ export const catalogApi = {
     return unwrap(response);
   },
 
+  async getTemplateById(templateId: string): Promise<TemplateListItem> {
+    const response = await api.get<ApiResponse<TemplateListItem>>(`/templates/id/${templateId}`);
+    return unwrap(response);
+  },
+
   async getTemplateDetail(slug: string, sessionId: string): Promise<TemplateDetail> {
     const response = await api.get<ApiResponse<TemplateDetail>>('/templates/' + slug, undefined, {
       'X-LC-Session-Id': sessionId,

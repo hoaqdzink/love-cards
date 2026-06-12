@@ -19,16 +19,16 @@ Bạn là AI Agent hỗ trợ phát triển Backend Java Spring Boot theo kiến
 ## Microservices Architecture Overview
 
 ```text
-┌─────────────────────────────────────────────────────────┐
+┌──────────────────────────────────────────────────────────┐
 │                    API Gateway                           │
 │              (Spring Cloud Gateway)                      │
-└──────────┬──────────┬──────────┬───────────┬────────────┘
+└──────────┬──────────┬──────────┬───────────┬─────────────┘
            │          │          │           │
      ┌─────▼───┐ ┌───▼────┐ ┌──▼────┐ ┌────▼─────┐
      │ Auth    │ │ Card   │ │ User  │ │ Payment  │  ...
      │ Service │ │ Service│ │Service│ │ Service  │
      └────┬────┘ └───┬────┘ └──┬────┘ └────┬─────┘
-          │          │          │           │
+          │          │         │           │
      ┌────▼────┐ ┌───▼────┐ ┌──▼────┐ ┌────▼─────┐
      │  DB     │ │  DB    │ │  DB   │ │   DB     │
      └─────────┘ └────────┘ └───────┘ └──────────┘
@@ -36,8 +36,8 @@ Bạn là AI Agent hỗ trợ phát triển Backend Java Spring Boot theo kiến
            └──────────┴──────────┴───────────┘
                           │
                  ┌────────▼────────┐
-                 │  Message Broker  │
-                 │ (RabbitMQ/Kafka) │
+                 │  Message Broker │
+                 │ (RabbitMQ/Kafka)│
                  └─────────────────┘
 ```
 

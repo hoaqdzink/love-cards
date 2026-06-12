@@ -8,6 +8,7 @@ import com.AVi.loved_card.template.dto.response.TemplateDetailResponse;
 import com.AVi.loved_card.template.dto.response.TemplateListItemResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 /** Hợp đồng nghiệp vụ catalog Phase 1 — list, detail, featured, trending, categories, music. */
 public interface TemplateCatalogService {
@@ -23,4 +24,6 @@ public interface TemplateCatalogService {
     List<TemplateCategoryResponse> getCategories();
 
     List<MusicTrackResponse> getMusic(String genre);
+
+    TemplateListItemResponse getTemplateById(UUID templateId);
 }

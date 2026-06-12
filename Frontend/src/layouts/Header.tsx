@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useId, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
-import { List, X } from '@phosphor-icons/react';
+import { List, ShoppingCart, X } from '@phosphor-icons/react';
+import { useCartStore } from '@/app/store/useCartStore';
 import logo from '@/assets/images/logo/result_logoAvi.png';
 
 const NAV_LINKS = [
@@ -17,6 +18,7 @@ const NAV_LINKS = [
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
+  const cartCount = useCartStore((state) => state.getCount());
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
@@ -138,6 +140,19 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <Link
+              to="/cart"
+              onClick={closeMenu}
+              className="relative inline-flex items-center justify-center w-11 h-11 rounded-xl border border-lightrose text-slate hover:bg-lightrose/50 hover:text-rose transition-colors"
+              aria-label="Giỏ hàng"
+            >
+              <ShoppingCart size={22} weight="bold" />
+              {cartCount > 0 ? (
+                <span className="absolute -top-1 -right-1 min-w-[1.25rem] h-5 px-1 rounded-full bg-rose text-white text-xs font-bold flex items-center justify-center">
+                  {cartCount > 99 ? '99+' : cartCount}
+                </span>
+              ) : null}
+            </Link>
             <Link
               to="/mau-thiep"
               onClick={closeMenu}

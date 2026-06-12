@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Triển khai catalog: Redis cache, JDBC list/filter, JPA detail + tăng view count có debounce.
@@ -133,6 +134,26 @@ public class TemplateCatalogServiceImpl implements TemplateCatalogService {
                 ? musicTrackRepository.findByActiveTrueOrderByTitleAsc()
                 : musicTrackRepository.findByActiveTrueAndGenreOrderByTitleAsc(genre);
         return tracks.stream().map(templateMapper::toMusic).toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TemplateListItemResponse getTemplateById(UUID templateId) {
+        Template template = templateRepository.findById(templateId)
+                .filter(t -> t.getDeletedAt() == null)
+                .orElseThrow(() -> new TemplateApiException(
+                        TemplateErrorCode.TPL_NOT_FOUND,
+                        "Mẫu thiệp không tồn tại",
+                        HttpStatus.NOT_FOUND
+                ));
+        if (!TemplateStatus.ACTIVE.value().equals(template.getStatus())) {
+            throw new TemplateApiException(
+                    TemplateErrorCode.TPL_INACTIVE,
+                    "Mẫu thiệp không khả dụng",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+        return templateMapper.toListItem(template);
     }
 
     private void incrementViewCountIfNeeded(Template template, String viewKey) {

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * REST API catalog mẫu thiệp: danh sách (lọc/sort/phân trang), featured, trending, categories, chi tiết theo slug.
@@ -70,6 +71,12 @@ public class TemplateController {
     @Operation(summary = "Lấy danh mục sự kiện kèm số lượng mẫu active")
     public AppResponse<List<TemplateCategoryResponse>> getCategories() {
         return AppResponse.success(templateCatalogService.getCategories());
+    }
+
+    @GetMapping("/id/{templateId}")
+    @Operation(summary = "Lấy mẫu thiệp theo UUID (commerce/cart lookup)")
+    public AppResponse<TemplateListItemResponse> getTemplateById(@PathVariable UUID templateId) {
+        return AppResponse.success(templateCatalogService.getTemplateById(templateId));
     }
 
     @GetMapping("/{slug}")

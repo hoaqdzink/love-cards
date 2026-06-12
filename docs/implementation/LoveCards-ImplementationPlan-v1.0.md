@@ -17,22 +17,25 @@
 | 3 | Admin Panel | **Cùng repo, cùng SPA** — route `/admin/*` |
 | 4 | Mẫu thiệp | **Tạo 2-3 mẫu demo** trong quá trình dev |
 | 5 | SMS/OTP | **Bỏ qua** phase đầu — chỉ Email + OAuth |
+| 6 | Thanh toán (payment) | **Tách Phase 2.5** — Phase 2 chỉ Cart & Checkout; payment khi cần |
+| 7 | Mock user Phase 2–4 | Header **`X-User-Id`** do client gửi; Phase 5 Gateway validate JWT và overwrite |
 
 ---
 
 ## Tổng Quan Phases
 
-| Phase | Tên | EPICs | Thời lượng ước tính |
-|-------|-----|-------|---------------------|
-| 0 | Infrastructure & Foundation | - | 1-2 tuần |
-| 1 | Catalog & Template (Trang chủ + Danh mục) | EPIC 1, 2 | 2-3 tuần |
-| 2 | Cart & Checkout & Payment | EPIC 3, 6 | 2-3 tuần |
-| 3 | Card Customization | EPIC 5 | 2-3 tuần |
-| 4 | Publish & Share | EPIC 7 | 1-2 tuần |
-| 5 | Authentication & User | EPIC 4 | 1-2 tuần |
-| 6 | RSVP, Wishes, Analytics, Admin, Legal, i18n | EPIC 8-12 | 3-4 tuần |
+| Phase | Tên | EPICs | Thời lượng ước tính | Kế hoạch chi tiết |
+|-------|-----|-------|---------------------|-------------------|
+| 0 | Infrastructure & Foundation | - | 1-2 tuần | `phase-0-plan.md` |
+| 1 | Catalog & Template (Trang chủ + Danh mục) | EPIC 1, 2 | 2-3 tuần | `implementation-plan-phase1.md` ✅ |
+| 2 | Cart & Checkout (không payment) | EPIC 3 | 1-2 tuần | `implementation-plan-phase2.md` |
+| 2.5 | Payment & Post-Checkout | EPIC 6 | 2-3 tuần | `implementation-plan-phase2.5-payment.md` |
+| 3 | Card Customization | EPIC 5 | 2-3 tuần | _(chưa tạo)_ |
+| 4 | Publish & Share | EPIC 7 | 1-2 tuần | _(chưa tạo)_ |
+| 5 | Authentication & User | EPIC 4 | 1-2 tuần | _(chưa tạo)_ |
+| 6 | RSVP, Wishes, Analytics, Admin, Legal, i18n | EPIC 8-12 | 3-4 tuần | _(chưa tạo)_ |
 
-> **Ghi chú:** Auth được đẩy xuống Phase 5. Các phase 1-4 phát triển chức năng chính trước, dùng mock user/token khi cần. Khi tích hợp Auth ở Phase 5, kết nối lại tất cả protected endpoints.
+> **Ghi chú:** Auth được đẩy xuống Phase 5. Phase 2–4 dùng header `X-User-Id` (mock). Phase 5: JWT thật, Gateway overwrite `X-User-Id`, **`POST /cart/merge` trên FE** sau login, ProtectedRoute. Phase 3 cần card `draft` sau PAID → **tiền đề Phase 2.5** (hoặc seed dev).
 
 ---
 
@@ -163,88 +166,116 @@ Trang chủ hiển thị đầy đủ sections. Trang danh mục có filter, sor
 
 ---
 
-## Phase 2 — Cart & Checkout & Payment (EPIC 3, 6)
+## Phase 2 — Cart & Checkout (EPIC 3)
+
+> **Kế hoạch chi tiết:** `implementation-plan-phase2.md`  
+> **Quyết định 2026-06-03:** Chưa cần thanh toán — payment chuyển **Phase 2.5**.
 
 ### Mục tiêu
-User có thể thêm mẫu vào giỏ, checkout, thanh toán qua tất cả phương thức, nhận xác nhận đơn hàng. Phase này dùng mock userId (hardcode hoặc header tạm) cho các endpoint cần auth — sẽ kết nối JWT thật ở Phase 5.
+User thêm mẫu vào giỏ (cookie), xem giỏ, checkout, chọn gói hosting per item, tạo đơn trạng thái `CREATED`, xem chi tiết đơn. Endpoint cart/order dùng header `X-User-Id` (mock). **Không** triển khai payment UI/API.
 
-### Backend (Order Service)
+### Backend (Order Service) — Phase 2
 
 | API | Method | Endpoint | Mô tả |
 |-----|--------|----------|-------|
-| Get cart | GET | `/cart` | Giỏ hàng user |
+| Get cart | GET | `/cart` | Giỏ DB (cần `X-User-Id`) |
 | Add to cart | POST | `/cart/items` | Thêm template |
 | Remove from cart | DELETE | `/cart/items/{templateId}` | Xóa khỏi giỏ |
-| Merge cart | POST | `/cart/merge` | Gộp cookie → DB |
-| Hosting plans | GET | `/hosting-plans` | Danh sách gói |
-| Create order | POST | `/orders` | Tạo đơn hàng |
+| Merge cart | POST | `/cart/merge` | Backend sẵn sàng; **FE gọi ở Phase 5** |
+| Hosting plans | GET | `/hosting-plans` | Danh sách gói (public) |
+| Create order | POST | `/orders` | Tạo đơn → `CREATED` |
 | Get orders | GET | `/orders` | Danh sách đơn user |
 | Get order detail | GET | `/orders/{orderCode}` | Chi tiết đơn |
-| Pay QR | POST | `/orders/{code}/pay/qr` | Tạo QR chuyển khoản |
-| Pay MoMo | POST | `/orders/{code}/pay/momo` | Thanh toán MoMo |
-| Pay VNPay | POST | `/orders/{code}/pay/vnpay` | Thanh toán VNPay |
-| Pay ZaloPay | POST | `/orders/{code}/pay/zalopay` | Thanh toán ZaloPay |
-| Pay Card | POST | `/orders/{code}/pay/card` | Thẻ quốc tế |
-| Confirm transfer | POST | `/orders/{code}/confirm-transfer` | Xác nhận đã CK |
-| Webhook VNPay | POST | `/webhooks/vnpay` | IPN callback |
-| Webhook MoMo | POST | `/webhooks/momo` | IPN callback |
-| Webhook ZaloPay | POST | `/webhooks/zalopay` | IPN callback |
 
-**Kỹ thuật:**
-- Order state machine (10 states)
-- VietQR API integration
-- VNPay, MoMo, ZaloPay SDK integration
-- Redis: order timeout (30min cho QR)
-- RabbitMQ: event `OrderPaid` → Card Service tạo card records
-- Scheduled job: check expired orders mỗi 5 phút
+**Kỹ thuật Phase 2:**
+- Cookie cart (FE) + API cart (dev/`X-User-Id`)
+- Thiếu `X-User-Id` trên cart/order → `401` + `AUTH_USER_REQUIRED`
+- Order state machine tối thiểu: `CREATED`, `CANCELLED`
+- Feign validate template + snapshot giá
+- Seed `auth.users` mock trên **auth-service** Flyway V2
+- **Không** xóa cookie cart sau tạo đơn — chỉ sau PAID (Phase 2.5)
 
-### Frontend
+### Frontend — Phase 2
 
 | Page/Component | Mô tả |
 |----------------|-------|
-| CartPage | Danh sách items, tổng tiền, nút checkout |
-| CheckoutPage | Chọn hosting plan + chọn payment method |
-| QRPaymentPage | Hiển thị QR + countdown 30 phút |
-| PaymentReturnPage | Xử lý redirect từ gateway |
-| OrderConfirmPage | Xác nhận thành công + link tùy chỉnh |
-| Cart icon (Header) | Badge số lượng items |
+| CartPage (`/cart`) | Items từ cookie, tổng tiền, checkout |
+| CheckoutPage (`/checkout`) | Hosting per item, tạo đơn |
+| Order page (`/orders/:orderCode`) | Đơn `CREATED`, thông báo payment Phase 2.5 |
+| Cart icon (Header) | Badge từ cookie store |
 
-**Kỹ thuật:**
-- Zustand cart store: cookie (anonymous) + API (logged in)
-- Cart merge trigger sau login
-- Redirect flow cho e-wallet payments
-- Polling order status sau confirm transfer
-
-### Database
-- Tables đã tạo Phase 0
-- Order status history tracking
+**Hoãn Phase 2:** QRPaymentPage, PaymentReturnPage, chọn payment method thật.
 
 ### Tiêu chí hoàn thành Phase 2
-- [ ] Thêm/xóa mẫu khỏi giỏ hàng (cookie khi chưa login, DB khi đã login)
-- [ ] Cart merge hoạt động (mock user)
-- [ ] Tạo đơn hàng với hosting plan
-- [ ] Thanh toán QR: hiển thị QR, countdown, confirm transfer
-- [ ] Thanh toán VNPay: redirect → callback → order paid
-- [ ] Thanh toán MoMo: redirect → callback → order paid
-- [ ] Thanh toán ZaloPay: redirect → callback → order paid
-- [ ] Thanh toán thẻ quốc tế hoạt động
-- [ ] Sau payment success: Card record được tạo (status=draft)
-- [ ] Email xác nhận đơn hàng được gửi
-- [ ] Order timeout 30 phút cho QR hoạt động
+- [ ] Thêm/xóa mẫu giỏ hàng qua cookie (UX chính)
+- [ ] API cart DB với `X-User-Id`
+- [ ] `POST /cart/merge` backend có; FE merge **Phase 5**
+- [ ] Tạo đơn `CREATED` với hosting per item
+- [ ] Trang cart / checkout / order detail hoạt động
 
 ### Kiểm thử Phase 2
-- Unit test: OrderService (state machine transitions, total calculation)
-- Integration test: full checkout flow (mock payment gateway)
-- Contract test: webhook signature verification
-- Frontend: CartPage interaction, CheckoutPage form
-- Manual test: thanh toán thật trên sandbox VNPay/MoMo
+- Unit test: order code, total calculation, cart rules
+- Integration test: create order `CREATED`
+- Frontend: CartPage, CheckoutPage
+
+---
+
+## Phase 2.5 — Payment & Post-Checkout (EPIC 6)
+
+> **Kế hoạch chi tiết:** `implementation-plan-phase2.5-payment.md`  
+> **Tiền đề:** Phase 2 hoàn thành.
+
+### Mục tiêu
+Thanh toán đầy đủ (QR + VNPay + MoMo + ZaloPay + Visa theo quyết định dự án), webhook, order state machine đầy đủ, sau PAID tạo card `draft` + email xác nhận.
+
+### Backend (Order Service) — bổ sung Phase 2.5
+
+| API | Method | Endpoint | Mô tả |
+|-----|--------|----------|-------|
+| Pay QR | POST | `/orders/{code}/pay/qr` | QR chuyển khoản |
+| Pay MoMo | POST | `/orders/{code}/pay/momo` | MoMo |
+| Pay VNPay | POST | `/orders/{code}/pay/vnpay` | VNPay |
+| Pay ZaloPay | POST | `/orders/{code}/pay/zalopay` | ZaloPay |
+| Pay Card | POST | `/orders/{code}/pay/card` | Thẻ quốc tế |
+| Confirm transfer | POST | `/orders/{code}/confirm-transfer` | User xác nhận CK |
+| Webhook VNPay/MoMo/ZaloPay | POST | `/webhooks/*` | IPN |
+
+**Kỹ thuật:**
+- Order state machine đầy đủ (10 states)
+- VietQR / QR local (theo plan Phase 2.5)
+- Redis order timeout 30 phút (QR)
+- RabbitMQ `OrderPaid` → Card + Notification
+- Scheduled job expire orders
+
+### Frontend — Phase 2.5
+
+| Page/Component | Mô tả |
+|----------------|-------|
+| CheckoutPage | Bật chọn payment method |
+| QRPaymentPage | QR + countdown + confirm |
+| PaymentReturnPage | Redirect từ gateway |
+| OrderConfirmPage | Sau PAID + link customize |
+
+### Tiêu chí hoàn thành Phase 2.5
+- [ ] Thanh toán QR + e-wallet + thẻ (theo scope đã chốt)
+- [ ] Webhook → order PAID
+- [ ] Card record `draft` sau PAID
+- [ ] Email xác nhận đơn
+- [ ] Order timeout QR 30 phút
+
+### Kiểm thử Phase 2.5
+- Integration: full checkout → pay → PAID → COMPLETED
+- Contract: webhook signature
+- Manual: sandbox VNPay/MoMo
 
 ---
 
 ## Phase 3 — Card Customization (EPIC 5)
 
+> **Tiền đề:** Phase **2.5** (card `draft` sau PAID) hoặc seed dev tạm thời.
+
 ### Mục tiêu
-User có thể tùy chỉnh thiệp: điền trường động, upload ảnh + crop, chọn nhạc, preview real-time, auto-save. Dùng mock userId tạm.
+User có thể tùy chỉnh thiệp: điền trường động, upload ảnh + crop, chọn nhạc, preview real-time, auto-save. Dùng header `X-User-Id` (mock đến Phase 5).
 
 ### Backend (Card Service)
 
@@ -402,7 +433,8 @@ Tích hợp hệ thống xác thực thật. Kết nối JWT vào tất cả pro
 **Kết nối lại Frontend:**
 - API client: thêm Authorization header từ useAuthStore
 - Auto refresh token khi 401
-- Cart merge trigger sau login thành công
+- **Cart merge:** `POST /cart/merge` sau login thành công (đã hoãn từ Phase 2 — không miss)
+- Gateway overwrite `X-User-Id` từ JWT; client không tự gửi `X-User-Id` production
 - ProtectedRoute wrap các pages: Checkout, Customize, MyCards
 
 ### Database
@@ -625,4 +657,4 @@ Mỗi Phase được coi là **Done** khi:
 ---
 
 *Kế hoạch này được tạo dựa trên toàn bộ tài liệu trong /docs và các quyết định đã xác nhận.*
-*Phiên bản: 1.0 | Ngày: 2026-05-22*
+*Phiên bản: 1.0 | Ngày: 2026-05-22 | Cập nhật: 2026-06-03 — Tách Phase 2 / 2.5 (payment hoãn)*

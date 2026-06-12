@@ -118,5 +118,46 @@
       "iframeTitle": "Xem trước {{name}}",
       "fieldsTitle": "Trường có thể tùy chỉnh"
     }
+  },
+  "cart": {
+    "title": "Giỏ hàng",
+    "subtitle": "{{count}} mẫu trong giỏ",
+    "added": "Đã thêm vào giỏ hàng",
+    "duplicate": "Mẫu này đã có trong giỏ hàng",
+    "maxItems": "Giỏ hàng đã đầy (tối đa 20 mẫu)",
+    "remove": "Xóa",
+    "checkout": "Thanh toán",
+    "estimatedTotal": "Tạm tính mẫu thiệp",
+    "hostingNote": "Phí hosting sẽ tính ở bước thanh toán",
+    "loadingItem": "Đang tải...",
+    "empty": {
+      "title": "Giỏ hàng trống",
+      "description": "Hãy chọn mẫu thiệp bạn thích và thêm vào giỏ.",
+      "cta": "Xem mẫu thiệp"
+    }
+  },
+  "checkout": {
+    "title": "Thanh toán",
+    "subtitle": "Chọn gói lưu trữ cho từng mẫu thiệp",
+    "hostingPlan": "Gói hosting",
+    "templatePrice": "Giá mẫu",
+    "months": "tháng",
+    "templatesSubtotal": "Tổng mẫu thiệp",
+    "hostingSubtotal": "Tổng hosting",
+    "grandTotal": "Tổng thanh toán",
+    "placeOrder": "Đặt hàng",
+    "placingOrder": "Đang tạo đơn...",
+    "backToCart": "Quay lại giỏ hàng",
+    "paymentComingSoon": "Cổng thanh toán sẽ có ở Phase 2.5. Đơn hàng sẽ ở trạng thái chờ thanh toán.",
+    "errorGeneric": "Không tạo được đơn hàng. Vui lòng thử lại."
+  },
+  "order": {
+    "loading": "Đang tải đơn hàng...",
+    "notFound": "Không tìm thấy đơn hàng",
+    "confirmed": "Đơn hàng đã tạo",
+    "status": "Trạng thái",
+    "total": "Tổng tiền",
+    "paymentComingSoon": "Thanh toán trực tuyến sẽ sớm có. Hiện tại đơn đang chờ thanh toán (CREATED).",
+    "continueShopping": "Tiếp tục xem mẫu"
   }
 }

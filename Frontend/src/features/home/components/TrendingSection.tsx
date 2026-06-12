@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { useUIStore } from '@/app/store/useUIStore';
+import { useAddToCart } from '@/features/cart/hooks';
 import { TemplateCard } from '@/features/catalog/components';
 import { useTrendingTemplates } from '@/features/catalog/hooks';
 
 export function TrendingSection() {
   const { t } = useTranslation();
-  const addToast = useUIStore((state) => state.addToast);
+  const addToCart = useAddToCart();
   const trendingQuery = useTrendingTemplates();
   const templates = trendingQuery.data ?? [];
 
@@ -23,7 +23,7 @@ export function TrendingSection() {
                 <TemplateCard
                   key={template.id}
                   template={template}
-                  onAddToCartClick={() => addToast(t('catalog.cart.developing'), 'info')}
+                  onAddToCartClick={() => addToCart(template.id)}
                 />
             ))}
             </div>

@@ -118,5 +118,46 @@
       "iframeTitle": "Preview {{name}}",
       "fieldsTitle": "Customizable fields"
     }
+  },
+  "cart": {
+    "title": "Cart",
+    "subtitle": "{{count}} template(s) in cart",
+    "added": "Added to cart",
+    "duplicate": "This template is already in your cart",
+    "maxItems": "Cart is full (max 20 templates)",
+    "remove": "Remove",
+    "checkout": "Checkout",
+    "estimatedTotal": "Templates subtotal",
+    "hostingNote": "Hosting fee is calculated at checkout",
+    "loadingItem": "Loading...",
+    "empty": {
+      "title": "Your cart is empty",
+      "description": "Browse templates and add your favorites.",
+      "cta": "Browse templates"
+    }
+  },
+  "checkout": {
+    "title": "Checkout",
+    "subtitle": "Choose a hosting plan for each template",
+    "hostingPlan": "Hosting plan",
+    "templatePrice": "Template price",
+    "months": "months",
+    "templatesSubtotal": "Templates subtotal",
+    "hostingSubtotal": "Hosting subtotal",
+    "grandTotal": "Grand total",
+    "placeOrder": "Place order",
+    "placingOrder": "Placing order...",
+    "backToCart": "Back to cart",
+    "paymentComingSoon": "Payment gateways arrive in Phase 2.5. Orders stay in CREATED until paid.",
+    "errorGeneric": "Could not create the order. Please try again."
+  },
+  "order": {
+    "loading": "Loading order...",
+    "notFound": "Order not found",
+    "confirmed": "Order created",
+    "status": "Status",
+    "total": "Total",
+    "paymentComingSoon": "Online payment is coming soon. This order is awaiting payment (CREATED).",
+    "continueShopping": "Continue browsing"
   }
 }
