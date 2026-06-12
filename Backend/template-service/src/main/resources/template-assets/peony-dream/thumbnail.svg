@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480" role="img" aria-label="Peony Dream thumbnail">
+  <rect width="640" height="480" fill="#fff7fa"/>
+  <circle cx="320" cy="210" r="96" fill="#f7b6c8"/>
+  <circle cx="320" cy="210" r="44" fill="#fff"/>
+  <text x="320" y="350" text-anchor="middle" font-family="Georgia, serif" font-size="46" fill="#4a2530">Peony Dream</text>
+</svg>

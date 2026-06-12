@@ -1,0 +1,29 @@
+# Build output
+target/
+*.jar
+*.class
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# MinIO local data
+minio-data/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.sw?
+
+# OS
+.DS_Store
+
+# Maven
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar

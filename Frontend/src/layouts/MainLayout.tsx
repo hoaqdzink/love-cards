@@ -2,6 +2,7 @@ import { CaretUp } from '@phosphor-icons/react';
 import { useScrollProgress, useScrollVisibility, useRevealOnScroll } from '@/shared/hooks';
 import { Header } from '@/layouts/Header';
 import { Footer } from '@/layouts/Footer';
+import { ToastViewport } from '@/shared/components/ToastViewport';
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
   const progress = useScrollProgress();
@@ -14,6 +15,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
       <Header />
       <main ref={revealRef}>{children}</main>
       <Footer />
+      <ToastViewport />
       
       <button
         type="button"

@@ -1,0 +1,66 @@
+# Shared config for all services
+spring:
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:lovecards}
+    username: ${POSTGRES_USER:lovecards}
+    password: ${POSTGRES_PASSWORD:lovecards_dev}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+springdoc:
+  api-docs:
+    enabled: ${SWAGGER_ENABLED:true}
+  swagger-ui:
+    enabled: ${SWAGGER_ENABLED:true}
+
+openapi:
+  gateway-url: ${API_GATEWAY_URL:http://localhost:8080}
+
+# ============ Object Storage (S3-compatible) ============
+# MinIO local (dev) — tương thích 100% S3 API
+# Khi deploy production: đổi giá trị trong .env hoặc environment variables
+storage:
+  endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:lovecards}
+  secret-key: ${MINIO_SECRET_KEY:lovecards_dev}
+  bucket: ${MINIO_BUCKET:lovecards-bucket}
+  region: ${S3_REGION:us-east-1}
+  public-url: ${MINIO_PUBLIC_URL:http://localhost:9000/lovecards-bucket}
+
+# --- AWS S3 (production) ---
+# Khi deploy, set environment variables:
+#   MINIO_ENDPOINT=https://s3.ap-southeast-1.amazonaws.com
+#   MINIO_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
+#   MINIO_SECRET_KEY=${AWS_SECRET_ACCESS_KEY}
+#   MINIO_BUCKET=lovecards-production
+#   S3_REGION=ap-southeast-1
+#   MINIO_PUBLIC_URL=https://cdn.lovecards.vn

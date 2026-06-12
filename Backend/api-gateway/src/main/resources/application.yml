@@ -1,0 +1,124 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service-api-docs
+          uri: lb://auth-service
+          predicates:
+            - Path=/api-docs/auth-service
+          filters:
+            - RewritePath=/api-docs/auth-service, /v3/api-docs
+
+        - id: template-service-api-docs
+          uri: lb://template-service
+          predicates:
+            - Path=/api-docs/template-service
+          filters:
+            - RewritePath=/api-docs/template-service, /v3/api-docs
+
+        - id: order-service-api-docs
+          uri: lb://order-service
+          predicates:
+            - Path=/api-docs/order-service
+          filters:
+            - RewritePath=/api-docs/order-service, /v3/api-docs
+
+        - id: card-service-api-docs
+          uri: lb://card-service
+          predicates:
+            - Path=/api-docs/card-service
+          filters:
+            - RewritePath=/api-docs/card-service, /v3/api-docs
+
+        - id: analytics-service-api-docs
+          uri: lb://analytics-service
+          predicates:
+            - Path=/api-docs/analytics-service
+          filters:
+            - RewritePath=/api-docs/analytics-service, /v3/api-docs
+
+        - id: notification-service-api-docs
+          uri: lb://notification-service
+          predicates:
+            - Path=/api-docs/notification-service
+          filters:
+            - RewritePath=/api-docs/notification-service, /v3/api-docs
+
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/v1/auth/**
+
+        - id: template-service
+          uri: lb://template-service
+          predicates:
+            - Path=/api/v1/templates/**,/api/v1/music/**,/api/v1/template-assets/**
+
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/v1/cart/**,/api/v1/orders/**,/api/v1/hosting-plans/**,/api/v1/webhooks/**
+
+        - id: card-service
+          uri: lb://card-service
+          predicates:
+            - Path=/api/v1/cards/**,/api/v1/public/cards/**,/api/v1/upload/**
+
+        - id: analytics-service
+          uri: lb://analytics-service
+          predicates:
+            - Path=/api/v1/analytics/**
+
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/v1/newsletter/**,/api/v1/b2b/**
+
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:5173"
+              - "https://lovecards.vn"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - PATCH
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+
+springdoc:
+  api-docs:
+    enabled: ${SWAGGER_ENABLED:true}
+  swagger-ui:
+    enabled: ${SWAGGER_ENABLED:true}
+    path: /swagger-ui.html
+    urls:
+      - name: Auth Service
+        url: /api-docs/auth-service
+      - name: Template Service
+        url: /api-docs/template-service
+      - name: Order Service
+        url: /api-docs/order-service
+      - name: Card Service
+        url: /api-docs/card-service
+      - name: Analytics Service
+        url: /api-docs/analytics-service
+      - name: Notification Service
+        url: /api-docs/notification-service

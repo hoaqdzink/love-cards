@@ -1,4 +1,5 @@
 import logo from '@/assets/images/logo/result_logoAvi.png';
+import { Link } from 'react-router-dom';
 
 export function Footer() {
   return (
@@ -18,7 +19,7 @@ export function Footer() {
         <div>
             <h4 className="font-bold text-softpink mb-6 text-sm uppercase tracking-wider">Khám Phá</h4>
             <ul className="space-y-3 text-sm text-white/70 font-light">
-            <li><a href="#templates" className="hover:text-softpink transition-colors">Mẫu thiệp cưới</a></li>
+            <li><Link to="/mau-thiep?event_type=wedding" className="hover:text-softpink transition-colors">Mẫu thiệp cưới</Link></li>
             <li><a href="#trending" className="hover:text-softpink transition-colors">Đang thịnh hành</a></li>
             <li><a href="#gallery" className="hover:text-softpink transition-colors">Bộ sưu tập</a></li>
             </ul>

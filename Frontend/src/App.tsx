@@ -1,19 +1,12 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { HomePage } from '@/pages/HomePage';
-
-// Cấu hình router cho ứng dụng:
-// - Sử dụng createBrowserRouter để tạo router dùng cho SPA.
-// - Trang HomePage được gán cho path '/'.
-// - RouterProvider sẽ nhận router này để xử lý định tuyến.
-
-const router = createBrowserRouter([
-  { path: '/', element: <HomePage /> },
-]);
-
-function AppRouter() {
-  return <RouterProvider router={router} />;
-}
+import { RouterProvider } from 'react-router-dom';
+import { QueryProvider } from '@/app/providers/QueryProvider';
+import '@/app/providers/I18nProvider';
+import { router } from '@/app/router';
 
 export default function App() {
-  return <AppRouter />;
+  return (
+    <QueryProvider>
+      <RouterProvider router={router} />
+    </QueryProvider>
+  );
 }
