@@ -1,7 +1,7 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { MainLayout } from '@/layouts/MainLayout';
-import { useUIStore } from '@/app/store/useUIStore';
+import { useAddToCart } from '@/features/cart/hooks';
 import { CatalogState } from '@/features/catalog/components';
 import { useTemplateDetail } from '@/features/catalog/hooks';
 import { formatVnd } from '@/features/catalog/utils/catalogLabels';
@@ -9,7 +9,8 @@ import { formatVnd } from '@/features/catalog/utils/catalogLabels';
 export function TemplatePreviewPage() {
   const { slug } = useParams();
   const { t } = useTranslation();
-  const addToast = useUIStore((state) => state.addToast);
+  const addToCart = useAddToCart();
+  const navigate = useNavigate();
   const templateQuery = useTemplateDetail(slug);
   const template = templateQuery.data;
 
@@ -69,14 +70,17 @@ export function TemplatePreviewPage() {
                 <div className="mt-8 grid gap-3">
                   <button
                     type="button"
-                    onClick={() => addToast(t('catalog.cart.developing'), 'info')}
+                    onClick={() => addToCart(template.id)}
                     className="min-h-12 rounded-full bg-rose px-5 py-3 text-sm font-medium text-white hover:bg-rose/90"
                   >
                     {t('actions.addToCart')}
                   </button>
                   <button
                     type="button"
-                    onClick={() => addToast(t('catalog.cart.developing'), 'info')}
+                    onClick={() => {
+                      addToCart(template.id);
+                      navigate('/checkout');
+                    }}
                     className="min-h-12 rounded-full border border-lightrose px-5 py-3 text-sm font-medium text-slate hover:bg-lightrose/50"
                   >
                     {t('actions.buyNow')}

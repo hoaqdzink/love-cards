@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { MainLayout } from '@/layouts/MainLayout';
-import { useUIStore } from '@/app/store/useUIStore';
+import { useAddToCart } from '@/features/cart/hooks';
 import { useDebounce } from '@/shared/hooks';
 import { CatalogPagination, CatalogState, FilterPanel, TemplateCard } from '@/features/catalog/components';
 import { useTemplates } from '@/features/catalog/hooks';
@@ -16,7 +16,7 @@ const SORT_VALUES: TemplateSort[] = ['popular', 'newest', 'price_asc', 'price_de
 
 export function CatalogPage() {
   const { t } = useTranslation();
-  const addToast = useUIStore((state) => state.addToast);
+  const addToCart = useAddToCart();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState(searchParams.get('q') ?? '');
   const debouncedSearch = useDebounce(searchInput, 300);
@@ -119,7 +119,7 @@ export function CatalogPage() {
                       <TemplateCard
                         key={template.id}
                         template={template}
-                        onAddToCartClick={() => addToast(t('catalog.cart.developing'), 'info')}
+                        onAddToCartClick={() => addToCart(template.id)}
                       />
                     ))}
                   </div>
