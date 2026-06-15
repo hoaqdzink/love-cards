@@ -22,10 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Triển khai {@link CartService} — giỏ DB per user, đồng bộ với Functional Design §3.
+ */
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
+    /** Giới hạn số mẫu — khớp FE {@code useCartStore} và error {@code CART_MAX_ITEMS}. */
     public static final int MAX_CART_ITEMS = 20;
 
     private final CartItemRepository cartItemRepository;
@@ -81,6 +85,7 @@ public class CartServiceImpl implements CartService {
             if (templateId == null) {
                 continue;
             }
+            // Bỏ qua mẫu đã có trong giỏ DB
             if (cartItemRepository.findByUserIdAndTemplateId(userId, templateId).isPresent()) {
                 continue;
             }
@@ -90,6 +95,7 @@ public class CartServiceImpl implements CartService {
             try {
                 templateLookupService.requireActiveTemplate(templateId);
             } catch (OrderApiException ex) {
+                // Cookie có id cũ/inactive — skip im lặng
                 continue;
             }
             CartItem item = new CartItem();
@@ -103,6 +109,7 @@ public class CartServiceImpl implements CartService {
         return new MergeCartResponse(merged, cart);
     }
 
+    /** Load DB + gọi template-service để trả tên/giá/ảnh cho từng dòng. */
     private List<CartItemResponse> loadCartItems(UUID userId) {
         List<CartItem> entities = cartItemRepository.findByUserIdOrderByAddedAtDesc(userId);
         List<CartItemResponse> items = new ArrayList<>();

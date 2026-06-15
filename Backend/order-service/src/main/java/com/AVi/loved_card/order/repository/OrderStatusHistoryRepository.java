@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
+/** Lưu lịch sử chuyển trạng thái đơn (Phase 2.5). */
 public interface OrderStatusHistoryRepository extends JpaRepository<OrderStatusHistory, UUID> {
 }

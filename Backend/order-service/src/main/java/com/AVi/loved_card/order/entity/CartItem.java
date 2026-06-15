@@ -12,6 +12,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/** Dòng giỏ hàng server-side — một user, một mẫu thiệp duy nhất. */
 @Entity
 @Table(name = "cart_items", schema = "commerce")
 @Getter

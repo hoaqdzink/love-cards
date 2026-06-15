@@ -11,6 +11,63 @@ Bạn là AI Agent hỗ trợ phát triển Frontend React cho dự án Love Car
 - Không sửa lan man ngoài phạm vi task.
 - Luôn đảm bảo responsive (mobile-first) và accessibility cơ bản.
 - TypeScript strict mode — không dùng `any`, không ignore errors.
+- **Mọi code mới** phải có comment theo mục [Code Comments](#code-comments-bắt-buộc) bên dưới.
+
+---
+
+## Code Comments (bắt buộc)
+
+Mục tiêu: người review / maintainer hiểu **nhiệm vụ** và **luồng xử lý** mà không cần đọc toàn bộ file.
+
+### Quy tắc chung
+
+| Vị trí | Bắt buộc | Nội dung |
+|--------|----------|----------|
+| **Đầu file** | Có (file export public) | Feature/module này phục vụ gì, route/API liên quan |
+| **Trên hàm/hook/component** | Có | Nhiệm vụ, input/output, side-effect (API, store, navigate) |
+| **Trong thân hàm** | Có ở nhánh quan trọng | Giải thích **tại sao** (business rule), không lặp lại tên biến |
+| **JSX/UI block lớn** | Có | Một dòng mô tả block (empty state, summary, form submit…) |
+
+### Format (TypeScript / TSX)
+
+```tsx
+/**
+ * Trang giỏ hàng — hiển thị mẫu đã chọn từ cookie (Zustand persist).
+ * Route: `/cart`. Dữ liệu mẫu hydrate qua `useEnrichedCart`.
+ */
+export function CartPage() { ... }
+
+/**
+ * Gọi Order Service tạo đơn CREATED.
+ * @param items - Mỗi dòng: templateId + hostingPlanId (Phase 2 Q07).
+ */
+async function createOrder(items: CreateOrderItem[]) { ... }
+```
+
+```tsx
+// Phase 2: không clearCart sau tạo đơn — chỉ xóa giỏ sau PAID (Phase 2.5).
+if (result === 'added') { ... }
+```
+
+### Không comment
+
+- Code đã tự giải thích (`const count = items.length`).
+- Import, type thuần, class Tailwind.
+- Comment cũ/sai — **sửa code hoặc sửa comment**, không để lệch.
+
+### Cấu trúc test (kèm comment)
+
+```text
+features/<tên>/test/
+├── unit/     # Vitest — comment describe/it: hành vi mong đợi
+└── e2e/      # Playwright — comment test.step: bước luồng người dùng
+```
+
+### Checklist trước khi hoàn thành task FE
+
+- [ ] File mới/sửa có block comment đầu file (nếu là page, hook, api, store).
+- [ ] Mọi export function/hook có JSDoc một dòng trở lên.
+- [ ] Nhánh business (empty, error, guard, Phase defer) có comment giải thích **why**.
 
 ---
 
@@ -640,7 +697,8 @@ export function LoginForm() {
 - Test behavior, không test implementation details.
 - Mỗi component test: render + user interaction + expected output.
 - Mock API calls, không mock internal hooks.
-- Test file đặt cạnh component: `ComponentName.test.tsx`.
+- Test file đặt trong `features/<tên>/test/unit/` hoặc `test/e2e/` — xem [Code Comments](#code-comments-bắt-buộc).
+- Mọi `describe` / `test.step` phải mô tả hành vi bằng tiếng Việt hoặc Anh rõ ràng.
 
 ---
 
@@ -676,6 +734,7 @@ AI Agent KHÔNG được:
 - Bỏ qua accessibility (thiếu alt, aria-label, semantic HTML).
 - Dùng `index` làm key trong list render (trừ static list không thay đổi).
 - Commit `console.log` — xóa trước khi hoàn thành task.
+- **Merge code mới không có comment** theo mục Code Comments (file/hàm/nhánh business).
 
 ---
 

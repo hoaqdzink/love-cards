@@ -1,5 +1,8 @@
 package com.AVi.loved_card.order.constant;
 
+/**
+ * Trạng thái đơn hàng — Phase 2 dùng {@link #CREATED}; payment states stub cho Phase 2.5.
+ */
 public enum OrderStatus {
     CREATED("created"),
     PENDING_QR("pending_qr"),
@@ -18,10 +21,12 @@ public enum OrderStatus {
         this.value = value;
     }
 
+    /** Giá trị lưu DB / API JSON. */
     public String value() {
         return value;
     }
 
+    /** Parse từ DB; dùng khi implement state machine Phase 2.5. */
     public static OrderStatus fromValue(String value) {
         for (OrderStatus status : values()) {
             if (status.value.equals(value)) {

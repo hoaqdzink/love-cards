@@ -1,3 +1,8 @@
+/**
+ * Trang thanh toán — chọn gói hosting **theo từng mẫu** (Q07) và tạo đơn CREATED.
+ * Route: `/checkout`. Redirect `/orders/:orderCode` khi POST thành công.
+ * Phase 2.5: payment; Phase 2 không clearCart sau tạo đơn.
+ */
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +23,7 @@ export function CheckoutPage() {
   const { data: plans = [], isLoading: plansLoading } = useHostingPlans();
   const recommendedPlan = plans.find((p) => p.recommended) ?? plans[0];
 
+  // Lựa chọn hosting do user đổi select; mặc định gán plan recommended
   const [selection, setSelection] = useState<Record<string, string>>({});
 
   const effectiveSelection = useMemo(() => {
@@ -60,6 +66,7 @@ export function CheckoutPage() {
 
   const allSelected = itemIds.every((id) => effectiveSelection[id]);
 
+  /** Gửi POST /orders với hostingPlanId từng dòng — chỉ khi đã chọn đủ plan. */
   const handleSubmit = () => {
     if (!allSelected) return;
     const items: CreateOrderItem[] = itemIds.map((templateId) => ({
@@ -110,6 +117,7 @@ export function CheckoutPage() {
           ))}
         </div>
 
+        {/* Tóm tắt tiền: mẫu + hosting + tổng */}
         <div className="mt-8 rounded-2xl border border-lightrose bg-lightrose/20 p-5">
           <div className="flex justify-between gap-3 text-slate text-sm sm:text-base">
             <span className="min-w-0">{t('checkout.templatesSubtotal')}</span>

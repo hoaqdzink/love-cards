@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * API danh mục gói hosting — public, không cần {@code X-User-Id}.
+ * Dùng trên trang checkout để chọn plan theo từng mẫu.
+ */
 @RestController
 @RequestMapping("/api/v1/hosting-plans")
 @RequiredArgsConstructor
@@ -20,6 +24,7 @@ public class HostingPlanController {
 
     private final HostingPlanService hostingPlanService;
 
+    /** Trả về gói {@code is_active=true}, gói recommended lên trước. */
     @GetMapping
     @Operation(summary = "Danh sách gói hosting active")
     public AppResponse<List<HostingPlanResponse>> listHostingPlans() {

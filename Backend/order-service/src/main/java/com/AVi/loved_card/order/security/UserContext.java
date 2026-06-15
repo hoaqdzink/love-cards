@@ -8,11 +8,20 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+/**
+ * Đọc user từ header {@code X-User-Id} (Phase 2 mock; Phase 5 gateway overwrite từ JWT).
+ * Thiếu hoặc UUID invalid → {@code AUTH_USER_REQUIRED} / HTTP 401.
+ */
 @Component
 public class UserContext {
 
     public static final String USER_ID_HEADER = "X-User-Id";
 
+    /**
+     * Bắt buộc có user hợp lệ trên mọi API cart/order.
+     *
+     * @throws OrderApiException 401 nếu thiếu header hoặc không parse được UUID
+     */
     public UUID requireUserId(HttpServletRequest request) {
         String raw = request.getHeader(USER_ID_HEADER);
         if (raw == null || raw.isBlank()) {

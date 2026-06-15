@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
-import { CartPage } from './CartPage';
+import { CartPage } from '../../pages/CartPage';
 
 const removeItem = vi.fn();
 

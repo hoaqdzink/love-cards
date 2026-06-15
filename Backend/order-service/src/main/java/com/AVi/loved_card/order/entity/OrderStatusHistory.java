@@ -12,6 +12,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/** Audit trail chuyển trạng thái đơn — dùng khi bật state machine Phase 2.5. */
 @Entity
 @Table(name = "order_status_history", schema = "commerce")
 @Getter
@@ -37,6 +38,7 @@ public class OrderStatusHistory {
     @Column(name = "changed_at", nullable = false)
     private LocalDateTime changedAt;
 
+    /** User hoặc system actor thực hiện chuyển trạng thái. */
     @Column(name = "changed_by")
     private UUID changedBy;
 }

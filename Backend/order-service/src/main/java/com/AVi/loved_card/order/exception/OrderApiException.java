@@ -2,6 +2,9 @@ package com.AVi.loved_card.order.exception;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * Exception nghiệp vụ order-service — mang {@code code} (OrderErrorCode) và HTTP status cho handler.
+ */
 public class OrderApiException extends RuntimeException {
 
     private final String code;
@@ -13,6 +16,7 @@ public class OrderApiException extends RuntimeException {
         this.status = status;
     }
 
+    /** Mã lỗi API — khớp {@link com.AVi.loved_card.order.constant.OrderErrorCode}. */
     public String getCode() {
         return code;
     }

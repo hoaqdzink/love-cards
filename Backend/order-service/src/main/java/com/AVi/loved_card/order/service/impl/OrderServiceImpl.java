@@ -33,6 +33,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Triển khai {@link OrderService} — tạo đơn Phase 2 (CREATED), snapshot giá tại thời điểm đặt.
+ */
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -56,6 +59,7 @@ public class OrderServiceImpl implements OrderService {
             );
         }
 
+        // Validate từng dòng + tính tổng trước khi ghi DB
         long total = 0;
         List<PreparedLine> lines = new ArrayList<>();
         for (CreateOrderItemRequest item : request.items()) {
@@ -78,6 +82,7 @@ public class OrderServiceImpl implements OrderService {
         order.setUpdatedAt(now);
         order = orderRepository.save(order);
 
+        // Audit trail trạng thái — bắt buộc mọi transition (Phase 2.5 mở rộng)
         OrderStatusHistory history = new OrderStatusHistory();
         history.setOrderId(order.getId());
         history.setFromStatus(null);
@@ -93,6 +98,7 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setOrderId(order.getId());
             orderItem.setTemplateId(line.template().id());
             orderItem.setHostingPlanId(line.plan().getId());
+            // Snapshot giá — không phụ thuộc giá catalog sau này
             orderItem.setTemplatePrice(line.template().price());
             orderItem.setHostingPrice(line.plan().getPrice());
             orderItem.setCreatedAt(now);
@@ -122,6 +128,7 @@ public class OrderServiceImpl implements OrderService {
         return toResponse(order, orderItemRepository.findByOrderIdOrderByCreatedAtAsc(order.getId()));
     }
 
+    /** Map Order + items → DTO API. */
     private OrderResponse toResponse(Order order, List<OrderItem> items) {
         List<OrderItemResponse> itemResponses = items.stream()
                 .map(this::toOrderItemResponse)
@@ -149,6 +156,7 @@ public class OrderServiceImpl implements OrderService {
         );
     }
 
+    /** Enrich tên mẫu; fallback nếu template đã inactive sau khi đặt. */
     private TemplateLineResponse resolveTemplateLine(OrderItem item) {
         try {
             return templateLookupService.toLine(
@@ -165,6 +173,7 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    /** Enrich tên gói hosting; fallback nếu plan bị ẩn sau khi đặt. */
     private HostingPlanResponse resolveHostingPlan(OrderItem item) {
         return hostingPlanRepository.findById(item.getHostingPlanId())
                 .map(hostingPlanService::toResponse)
@@ -179,6 +188,7 @@ public class OrderServiceImpl implements OrderService {
                 ));
     }
 
+    /** Dòng đơn đã validate — dùng khi persist OrderItem. */
     private record PreparedLine(TemplateSummaryDto template, HostingPlan plan, long lineTotal) {
     }
 }

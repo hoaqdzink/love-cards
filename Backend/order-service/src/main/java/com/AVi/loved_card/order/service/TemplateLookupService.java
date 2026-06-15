@@ -13,12 +13,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+/**
+ * Gọi template-service (Feign) — validate mẫu active và map sang DTO dòng giỏ/đơn.
+ */
 @Service
 @RequiredArgsConstructor
 public class TemplateLookupService {
 
     private final TemplateServiceClient templateServiceClient;
 
+    /**
+     * Lấy metadata mẫu; ném {@code ORD_TEMPLATE_UNAVAILABLE} / {@code CART_TEMPLATE_*} nếu lỗi.
+     */
     public TemplateSummaryDto requireActiveTemplate(UUID templateId) {
         try {
             AppResponse<TemplateSummaryDto> response = templateServiceClient.getTemplateById(templateId);
@@ -33,6 +39,7 @@ public class TemplateLookupService {
                     HttpStatus.NOT_FOUND
             );
         } catch (FeignException.BadRequest ex) {
+            // Template-service trả 400 khi status inactive
             throw new OrderApiException(
                     OrderErrorCode.CART_TEMPLATE_INACTIVE,
                     "Mẫu thiệp không còn khả dụng",
@@ -45,6 +52,7 @@ public class TemplateLookupService {
         }
     }
 
+    /** Map summary → dòng hiển thị trên cart/order response. */
     public TemplateLineResponse toLine(TemplateSummaryDto template) {
         return new TemplateLineResponse(
                 template.id(),

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+/** Triển khai catalog hosting — seed Flyway V2 Phase 1. */
 @Service
 @RequiredArgsConstructor
 public class HostingPlanServiceImpl implements HostingPlanService {

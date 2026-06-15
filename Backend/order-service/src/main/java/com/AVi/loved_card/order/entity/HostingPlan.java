@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/** Gói lưu trữ thiệp online — seed Flyway, user chọn khi checkout. */
 @Entity
 @Table(name = "hosting_plans", schema = "commerce")
 @Getter

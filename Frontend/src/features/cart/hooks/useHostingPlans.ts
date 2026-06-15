@@ -1,3 +1,7 @@
+/**
+ * TanStack Query — cache danh sách gói hosting từ Order Service.
+ * Dùng trên CheckoutPage để chọn plan theo từng mẫu.
+ */
 import { useQuery } from '@tanstack/react-query';
 import { commerceApi } from '@/features/cart/api/commerceApi';
 

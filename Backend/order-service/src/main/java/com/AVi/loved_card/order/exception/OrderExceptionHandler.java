@@ -9,10 +9,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.http.HttpStatus;
 
+/**
+ * Map exception order-service → {@link AppResponse} thống nhất (Q12).
+ */
 @RestControllerAdvice(basePackages = "com.AVi.loved_card.order")
 @Slf4j
 public class OrderExceptionHandler {
 
+    /** Lỗi nghiệp vụ có mã {@code OrderErrorCode} và HTTP status tương ứng. */
     @ExceptionHandler(OrderApiException.class)
     public ResponseEntity<AppResponse<Void>> handleOrderApiException(OrderApiException ex) {
         log.warn("Order API error: code={}, message={}", ex.getCode(), ex.getMessage());
@@ -20,6 +24,7 @@ public class OrderExceptionHandler {
                 .body(AppResponse.error(ex.getCode(), ex.getMessage()));
     }
 
+    /** Bean validation trên request DTO. */
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public AppResponse<Void> handleConstraintViolation(ConstraintViolationException ex) {

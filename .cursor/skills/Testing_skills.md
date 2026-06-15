@@ -10,6 +10,20 @@ Bạn là AI Agent hỗ trợ viết test cho dự án Love Cards. Đảm bảo 
 - Test phải độc lập — không phụ thuộc thứ tự chạy, không share state.
 - Test phải deterministic — chạy 100 lần cho cùng kết quả.
 - Ưu tiên readability: người đọc hiểu test đang kiểm tra gì trong 5 giây.
+- **Test mới** phải có comment mô tả hành vi / luồng — xem [Comment trong test](#comment-trong-test).
+
+---
+
+## Comment trong test
+
+| Loại | Comment ở đâu | Nội dung |
+|------|---------------|----------|
+| **Unit (Vitest/JUnit)** | Trên `describe` / `@DisplayName` | Feature + điều kiện setup |
+| **Unit** | Trên `it` / `@Test` | Hành vi mong đợi khi pass |
+| **E2E (Playwright)** | `test.step('…')` | Bước luồng người dùng (tiếng Việt OK) |
+| **Fixture/mock** | Đầu file helper | API nào được mock, vì sao không dùng backend thật |
+
+Không comment dòng assert hiển nhiên (`expect(x).toBe(1)`).
 
 ---
 

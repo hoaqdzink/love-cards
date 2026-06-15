@@ -13,6 +13,61 @@ Bạn là AI Agent hỗ trợ phát triển Backend Java Spring Boot theo kiến
 - Mỗi microservice phải có bounded context rõ ràng, không chia sẻ database.
 - Giao tiếp giữa services qua REST (synchronous) hoặc Message Broker (asynchronous).
 - Luôn thiết kế API theo nguyên tắc backward-compatible.
+- **Mọi code mới** phải có comment theo mục [Code Comments](#code-comments-bắt-buộc) bên dưới.
+
+---
+
+## Code Comments (bắt buộc)
+
+Mục tiêu: kiểm soát logic nghiệp vụ giữa Controller → Service → Repository, đặc biệt trong microservices.
+
+### Quy tắc chung
+
+| Vị trí | Bắt buộc | Nội dung |
+|--------|----------|----------|
+| **Class** (Controller, Service, Config) | Có | Bounded context, endpoint chính, phase/ticket nếu có |
+| **Public method** | Có | Nhiệm vụ, pre/post condition, exception ném ra |
+| **Trong method** | Có ở bước quan trọng | Validation, state transition, gọi Feign/event — **tại sao** |
+| **Flyway migration** | Có đầu file | Mục đích migration, phase, dữ liệu seed |
+
+### Format (Java)
+
+```java
+/**
+ * Tạo đơn hàng trạng thái CREATED từ danh sách mẫu + gói hosting.
+ * Không xóa giỏ DB — FE giữ cookie đến khi PAID (Phase 2.5).
+ *
+ * @throws OrderApiException ORD_TEMPLATE_UNAVAILABLE nếu template inactive
+ */
+public OrderResponse createOrder(UUID userId, CreateOrderRequest request) { ... }
+```
+
+```java
+// Q07: mỗi OrderItem mang hostingPlanId riêng — không dùng plan mặc định chung.
+for (CreateOrderItemRequest item : request.getItems()) { ... }
+```
+
+### Layer — comment gì
+
+| Layer | Comment tập trung vào |
+|-------|------------------------|
+| **Controller** | HTTP contract, auth header, không business |
+| **Service** | Business rules, orchestration, transaction boundary |
+| **Repository** | Query đặc biệt, index, soft-delete |
+| **Client (Feign)** | Service gọi, fallback/timeout nếu có |
+
+### Không comment
+
+- Getter/setter Lombok trivial.
+- Mapper một dòng map field cùng tên.
+- Code đã rõ từ tên method (`findByOrderCode`).
+
+### Checklist trước khi hoàn thành task BE
+
+- [ ] Class public mới có JavaDoc class-level.
+- [ ] Mọi public method service/controller có JavaDoc.
+- [ ] State machine / enum transition có comment tham chiếu Functional Design.
+- [ ] Error code mới có comment mapping HTTP + message.
 
 ---
 
@@ -854,6 +909,7 @@ AI Agent phải:
 ### Forbidden Actions
 
 AI Agent KHÔNG được:
+- Merge class/service public **không có JavaDoc** (xem Code Comments).
 - Viết JSON example dài trong Controller.
 - Expose Entity ra API (luôn dùng DTO).
 - Duplicate Swagger config nhiều nơi.

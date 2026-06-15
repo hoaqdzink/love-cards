@@ -12,6 +12,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/** Chi tiết đơn — snapshot giá mẫu + gói hosting tại thời điểm tạo đơn. */
 @Entity
 @Table(name = "order_items", schema = "commerce")
 @Getter
@@ -31,9 +32,11 @@ public class OrderItem {
     @Column(name = "hosting_plan_id")
     private UUID hostingPlanId;
 
+    /** Giá mẫu snapshot (VND). */
     @Column(name = "template_price", nullable = false)
     private Long templatePrice;
 
+    /** Giá hosting snapshot (VND). */
     @Column(name = "hosting_price", nullable = false)
     private Long hostingPrice;
 

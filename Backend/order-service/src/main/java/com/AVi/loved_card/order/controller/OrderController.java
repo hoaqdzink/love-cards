@@ -22,6 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * REST API đơn hàng Phase 2 — tạo/xem đơn trạng thái {@code created}.
+ * Chưa có payment (Phase 2.5). Mọi endpoint yêu cầu {@code X-User-Id}.
+ */
 @RestController
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
@@ -31,6 +35,10 @@ public class OrderController {
     private final OrderService orderService;
     private final UserContext userContext;
 
+    /**
+     * Tạo đơn từ body {@code items[{ templateId, hostingPlanId }]} (Q07 — hosting per item).
+     * Không xóa giỏ cookie/DB — chỉ xóa sau PAID (Phase 2.5).
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Tạo đơn hàng từ danh sách items")
@@ -42,6 +50,7 @@ public class OrderController {
         return AppResponse.success(orderService.createOrder(userId, body));
     }
 
+    /** Danh sách đơn của user, mới nhất trước. UI list hoãn Phase 5. */
     @GetMapping
     @Operation(summary = "Danh sách đơn hàng của user")
     public AppResponse<List<OrderResponse>> listOrders(HttpServletRequest request) {
@@ -49,6 +58,7 @@ public class OrderController {
         return AppResponse.success(orderService.listOrders(userId));
     }
 
+    /** Chi tiết đơn theo {@code orderCode}; 404 nếu không thuộc user ({@code ORD_NOT_FOUND}). */
     @GetMapping("/{orderCode}")
     @Operation(summary = "Chi tiết đơn hàng theo mã")
     public AppResponse<OrderResponse> getOrder(

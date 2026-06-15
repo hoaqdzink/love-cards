@@ -8,9 +8,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.UUID;
 
+/**
+ * Feign client gọi template-service — validate mẫu và lấy giá snapshot khi tạo đơn/giỏ.
+ */
 @FeignClient(name = "template-service")
 public interface TemplateServiceClient {
 
+    /** GET metadata mẫu theo UUID (active only trả 200). */
     @GetMapping("/api/v1/templates/id/{templateId}")
     AppResponse<TemplateSummaryDto> getTemplateById(@PathVariable("templateId") UUID templateId);
 }

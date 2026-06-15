@@ -7,11 +7,15 @@ import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Sinh mã đơn duy nhất dạng {@code LC-yyyyMMdd-XXXX} (4 ký tự alphanumeric).
+ */
 @Component
 public class OrderCodeGenerator {
 
     private static final String PREFIX = "LC-";
     private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("yyyyMMdd");
+    /** Bỏ ký tự dễ nhầm (0/O, 1/I). */
     private static final String ALPHANUM = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
     private static final int SUFFIX_LENGTH = 4;
 
@@ -22,6 +26,12 @@ public class OrderCodeGenerator {
         this.orderRepository = orderRepository;
     }
 
+    /**
+     * Thử tối đa 20 lần để tránh trùng {@code order_code} trên DB.
+     *
+     * @return mã đơn mới
+     * @throws IllegalStateException nếu không sinh được mã unique
+     */
     public String generate() {
         for (int attempt = 0; attempt < 20; attempt++) {
             String code = PREFIX + LocalDate.now().format(DATE_FMT) + "-" + randomSuffix();

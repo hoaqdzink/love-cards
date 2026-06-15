@@ -1,3 +1,8 @@
+/**
+ * Trang giỏ hàng — hiển thị mẫu đã chọn (cookie Zustand `lc_cart`).
+ * Route: `/cart`. Hydrate metadata mẫu qua `useEnrichedCart`.
+ * Phase 2: chưa sync giỏ lên DB mỗi lần thêm; không xóa giỏ sau tạo đơn.
+ */
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { MainLayout } from '@/layouts/MainLayout';
@@ -17,6 +22,7 @@ export function CartPage() {
         <p className="mt-2 text-slate/70">{t('cart.subtitle', { count: itemCount })}</p>
 
         {itemCount === 0 ? (
+          /* Empty state — hướng khách về danh mục */
           <div className="mt-10 rounded-2xl border border-lightrose bg-white p-8 text-center">
             <p className="text-slate font-medium">{t('cart.empty.title')}</p>
             <p className="mt-2 text-slate/70 text-sm">{t('cart.empty.description')}</p>
@@ -61,6 +67,7 @@ export function CartPage() {
               </div>
             ))}
 
+            {/* Footer: tạm tính (chưa gồm hosting) + CTA checkout — flex-col mobile */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4 border-t border-lightrose">
               <div>
                 <p className="text-sm text-slate/70">{t('cart.estimatedTotal')}</p>
