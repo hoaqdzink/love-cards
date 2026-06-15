@@ -1,0 +1,14 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Love Cards (local)",
+      "Group": "Development",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "lovecards",
+      "Username": "lovecards",
+      "PassFile": "/pgpass",
+      "SSLMode": "prefer"
+    }
+  }
+}

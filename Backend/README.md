@@ -24,7 +24,7 @@ Hệ thống backend cho nền tảng thiệp mời kỹ thuật số Love Cards
 ```text
 Backend/
 ├── pom.xml                      # Parent POM (multi-module)
-├── docker-compose.yml           # PostgreSQL + Redis + RabbitMQ
+├── docker-compose.yml           # PostgreSQL + pgAdmin + Redis + RabbitMQ
 ├── common-lib/                  # Shared: ApiResponse, exceptions, utils
 ├── service-discovery/           # Eureka Server (port 8761)
 ├── config-server/               # Spring Cloud Config (port 8888)
@@ -268,6 +268,7 @@ Kết quả mong đợi:
 | Container | Port | Mô tả |
 |-----------|------|-------|
 | `lovecards-postgres` | 5432 | PostgreSQL 16 |
+| `lovecards-pgadmin` | 5050 | pgAdmin 4 (quản lý DB) |
 | `lovecards-redis` | 6379 | Redis 7 |
 | `lovecards-rabbitmq` | 5672, 15672 | RabbitMQ (AMQP + Management UI) |
 
@@ -310,6 +311,9 @@ java -jar analytics-service/target/analytics-service-0.0.1-SNAPSHOT.jar
 | http://localhost:8888/actuator/health | Config Server health check |
 | http://localhost:8080/api/v1/templates | API Gateway → Template Service |
 | http://localhost:15672 | RabbitMQ Management UI (guest/guest) |
+| http://localhost:5050 | pgAdmin (`dev@lovecards.dev` / `lovecards_dev`) — server **Love Cards (local)** đã cấu hình sẵn |
+
+**pgAdmin:** Sau `docker compose up -d`, mở http://localhost:5050. Đăng nhập bằng `PGADMIN_DEFAULT_EMAIL` / `PGADMIN_DEFAULT_PASSWORD` trong `.env`. Trong cây bên trái: **Development → Love Cards (local)** — kết nối tới container `postgres` (user `lovecards`, DB `lovecards`). Các schema chính: `catalog`, `commerce`, `auth`.
 
 ---
 
