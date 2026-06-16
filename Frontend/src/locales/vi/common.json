@@ -13,6 +13,7 @@
   },
   "actions": {
     "addToCart": "Thêm vào giỏ",
+    "useTemplate": "Sử dụng mẫu",
     "buyNow": "Mua ngay",
     "preview": "Xem trước",
     "share": "Chia sẻ",
@@ -28,11 +29,196 @@
     "loading": "Đang tải..."
   },
   "home": {
+    "hero": {
+      "badge": "Love Cards · Thiệp sự kiện cao cấp",
+      "templateCount": "{{count}}+ mẫu thiệp",
+      "templateCountFallback": "200+ mẫu thiệp",
+      "title": "Mỗi khoảnh khắc đáng nhớ,",
+      "titleAccent": "xứng một tấm thiệp tinh tế",
+      "description": "Thiết kế sang trọng, tùy chỉnh dễ dàng, chia sẻ chỉ với một link — để ngày trọng đại của bạn thật khác biệt.",
+      "ctaPrimary": "Khám phá mẫu thiệp",
+      "ctaSecondary": "Xem mẫu tiêu biểu",
+      "cta": "Khám phá mẫu thiệp",
+      "trust": "10.000+ cặp đôi tin dùng",
+      "trustCustomers": "10.000+ khách hàng",
+      "trustLine": "{{count}}+ mẫu · {{customers}} · {{rating}}",
+      "imageAlt": "Thiệp cưới Love Cards"
+    },
+    "trust": {
+      "stats": {
+        "templates": "Mẫu thiệp",
+        "templatesFallback": "200",
+        "customers": "Khách hàng",
+        "rating": "Đánh giá trung bình",
+        "time": "Tạo xong thiệp",
+        "timeValue": "5 phút"
+      },
+      "usps": {
+        "design": {
+          "title": "Thiết kế cao cấp",
+          "desc": "Mẫu thiệp được chọn lọc kỹ, cập nhật xu hướng liên tục."
+        },
+        "mobile": {
+          "title": "Mọi thiết bị",
+          "desc": "Hiển thị hoàn hảo trên điện thoại, máy tính bảng và desktop."
+        },
+        "share": {
+          "title": "Chia sẻ tức thì",
+          "desc": "Gửi link qua Zalo, Messenger chỉ trong vài giây."
+        },
+        "customize": {
+          "title": "Tùy chỉnh dễ dàng",
+          "desc": "Điền thông tin, ảnh và âm nhạc theo phong cách riêng."
+        }
+      }
+    },
+    "styles": {
+      "eyebrow": "Phong cách",
+      "title": "Tìm cảm hứng theo gu của bạn",
+      "description": "Khám phá các phong cách thiết kế — từ tối giản thanh lịch đến luxury sang trọng.",
+      "explore": "Khám phá",
+      "elegant": {
+        "title": "Sang trọng",
+        "description": "Tinh tế, đẳng cấp cho ngày trọng đại"
+      },
+      "minimal": {
+        "title": "Tối giản",
+        "description": "Gọn gàng, hiện đại, tập trung nội dung"
+      },
+      "modern": {
+        "title": "Hiện đại",
+        "description": "Trẻ trung, sáng tạo và năng động"
+      },
+      "classic": {
+        "title": "Cổ điển",
+        "description": "Hoài niệm, ấm áp và truyền thống"
+      },
+      "luxury": {
+        "title": "Luxury",
+        "description": "Vàng gold, chi tiết tinh xảo"
+      }
+    },
+    "featured": {
+      "eyebrow": "Tiêu biểu",
+      "title": "Mẫu được yêu thích nhất",
+      "description": "Một vài thiết kế nổi bật — khám phá thêm hàng trăm mẫu khác trong thư viện.",
+      "browseLibrary": "Khám phá toàn bộ thư viện",
+      "error": "Chưa tải được mẫu nổi bật, vui lòng thử lại sau."
+    },
     "categories": {
       "eyebrow": "Danh mục",
-      "title": "Lựa Chọn Dành Cho Bạn",
+      "title": "Lựa chọn dành cho bạn",
       "description": "Chọn loại sự kiện phù hợp và khám phá nhanh các mẫu thiệp đang có",
       "count": "{{count}} mẫu"
+    },
+    "showcase": {
+      "title": "Khám phá mẫu thiệp",
+      "description": "Tìm, lọc và chọn mẫu phù hợp ngay trên trang chủ.",
+      "tabsLabel": "Loại mẫu thiệp",
+      "tabs": {
+        "featured": "Nổi bật",
+        "newest": "Mới nhất",
+        "trending": "Xu hướng",
+        "bestseller": "Bán chạy"
+      },
+      "filters": {
+        "wedding": "Đám cưới",
+        "birthday": "Sinh nhật",
+        "pink": "Tông hồng",
+        "free": "Miễn phí"
+      },
+      "error": "Chưa tải được mẫu thiệp, vui lòng thử lại sau."
+    },
+    "search": {
+      "label": "Tìm mẫu thiệp",
+      "placeholder": "Tìm mẫu cưới, sinh nhật, tối giản...",
+      "submit": "Tìm kiếm"
+    },
+    "howItWorks": {
+      "title": "Quy trình tạo thiệp",
+      "description": "Ba bước đơn giản để có thiệp điện tử mang dấu ấn riêng.",
+      "stepLabel": "Bước {{step}}",
+      "steps": {
+        "choose": {
+          "title": "Chọn mẫu",
+          "desc": "Lọc theo sự kiện, màu sắc và phong cách bạn thích."
+        },
+        "customize": {
+          "title": "Tùy chỉnh",
+          "desc": "Điền thông tin, ảnh và âm nhạc cho thiệp của bạn."
+        },
+        "share": {
+          "title": "Chia sẻ",
+          "desc": "Gửi link qua Zalo, Messenger cho khách mời tức thì."
+        }
+      }
+    },
+    "collections": {
+      "eyebrow": "Bộ sưu tập",
+      "title": "Khám phá theo chủ đề",
+      "description": "Các bộ sưu tập được chọn lọc để bạn tìm mẫu nhanh hơn.",
+      "explore": "Khám phá",
+      "outdoorWedding": {
+        "title": "Đám cưới ngoài trời",
+        "description": "Thiên nhiên, ánh sáng và không gian mở"
+      },
+      "birthday": {
+        "title": "Tiệc sinh nhật",
+        "description": "Vui tươi, rực rỡ cho mọi lứa tuổi"
+      },
+      "minimal": {
+        "title": "Phong cách tối giản",
+        "description": "Thanh lịch, gọn gàng, hiện đại"
+      },
+      "luxury": {
+        "title": "Luxury",
+        "description": "Sang trọng với tông vàng và chi tiết tinh tế"
+      }
+    },
+    "testimonials": {
+      "eyebrow": "Niềm tin",
+      "title": "Khách hàng nói gì về LoveCards",
+      "subtitle": "⭐ {{rating}} từ {{total}}",
+      "rating": "4.9/5",
+      "totalReviews": "2.341 khách hàng hài lòng",
+      "marqueeLabel": "Đánh giá khách hàng",
+      "verified": "Khách hàng xác thực",
+      "prev": "Xem trước",
+      "next": "Xem tiếp",
+      "items": {
+        "minhAnh": {
+          "quote": "\"Giao diện web rất đẹp, tạo thiệp siêu nhanh mà lại rất sang. Mình gửi cho họ hàng lớn tuổi ai cũng khen vì thiệp rõ ràng, dễ đọc trên điện thoại.\"",
+          "quoteShort": "Giao diện đẹp, tạo thiệp rất nhanh, khách mời dễ xem trên điện thoại.",
+          "name": "Minh Anh",
+          "role": "Cô dâu · Cưới 15.10.2025"
+        },
+        "tuanKiet": {
+          "quote": "\"Rất chuyên nghiệp! Các tính năng tùy chỉnh trực quan, được tối ưu riêng cho ngành cưới. Cực kỳ recommend!\"",
+          "quoteShort": "Rất chuyên nghiệp, cực kỳ recommend cho các cặp đôi sắp cưới.",
+          "name": "Tuấn Kiệt",
+          "role": "Chú rể · Cưới 22.09.2025"
+        },
+        "baoChau": {
+          "quote": "\"Mình thích nhất mẫu thiệp lãng mạn tone hồng ở đây. Làm xong gửi bạn bè đứa nào cũng hỏi xin link web.\"",
+          "quoteShort": "Thiệp đẹp, khách mời rất thích, bạn bè ai cũng hỏi link.",
+          "name": "Bảo Châu",
+          "role": "Cô dâu · Cưới 01.11.2025"
+        },
+        "thuHa": {
+          "quoteShort": "Làm thiệp trong vài phút, gửi Zalo cho khách mời rất tiện.",
+          "name": "Thu Hà",
+          "role": "Cô dâu · Cưới 08.12.2025"
+        }
+      }
+    },
+    "cta": {
+      "headline": "Sẵn sàng tạo thiệp cho ngày trọng đại?",
+      "title": "Hơn {{count}} mẫu thiệp đang chờ bạn khám phá",
+      "templateCountFallback": "200",
+      "description": "Hơn {{count}} mẫu thiệp đang chờ bạn — bắt đầu khám phá và chọn thiết kế phù hợp nhất.",
+      "primary": "Khám phá thư viện mẫu",
+      "secondary": "Xem mẫu tiêu biểu",
+      "browseAll": "Khám phá tất cả mẫu"
     },
     "templates": {
       "title": "Mẫu Thiệp Nổi Bật",
@@ -49,8 +235,12 @@
   "catalog": {
     "eyebrow": "Thư viện mẫu",
     "title": "Khám phá mẫu thiệp",
-    "description": "Tìm kiếm, lọc theo loại sự kiện và màu sắc để chọn mẫu phù hợp nhất.",
+    "description": "Tìm kiếm, lọc nhanh và khám phá liên tục các mẫu thiệp phù hợp.",
     "resultCount": "Hiển thị {{from}}-{{to}} / {{total}} mẫu",
+    "resultTotal": "{{total}} mẫu thiệp",
+    "activeFilters": "Đang lọc",
+    "removeFilter": "Gỡ bộ lọc",
+    "loadingMore": "Đang tải thêm mẫu...",
     "search": {
       "label": "Tìm kiếm mẫu",
       "placeholder": "Tìm theo tên hoặc mô tả, ví dụ: rose, cưới..."
@@ -83,12 +273,23 @@
       "priceAsc": "Giá tăng dần",
       "priceDesc": "Giá giảm dần"
     },
+    "price": {
+      "label": "Giá",
+      "all": "Tất cả mức giá",
+      "free": "Miễn phí",
+      "under50k": "Dưới 50.000₫",
+      "range50k100k": "50.000 – 100.000₫",
+      "over100k": "Trên 100.000₫"
+    },
     "badges": {
       "featured": "Nổi bật",
-      "trending": "Trending"
+      "trending": "Xu hướng",
+      "new": "Mới"
     },
     "card": {
-      "views": "lượt xem"
+      "views": "lượt xem",
+      "uses": "lượt dùng",
+      "previewAria": "Xem trước mẫu {{name}}"
     },
     "cart": {
       "developing": "Tính năng đang phát triển"
@@ -116,7 +317,8 @@
     "preview": {
       "backToCatalog": "Quay lại danh mục mẫu",
       "iframeTitle": "Xem trước {{name}}",
-      "fieldsTitle": "Trường có thể tùy chỉnh"
+      "fieldsTitle": "Trường có thể tùy chỉnh",
+      "viewDetail": "Xem chi tiết"
     }
   },
   "cart": {

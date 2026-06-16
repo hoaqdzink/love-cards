@@ -14,6 +14,8 @@ function unwrap<T>(response: ApiResponse<T>): T {
 }
 
 function filterToParams(filter: TemplateFilter): Record<string, unknown> {
+  const priceBounds = resolvePriceBounds(filter);
+
   return {
     event_type: filter.eventType?.join(','),
     colors: filter.colors?.join(','),
@@ -21,7 +23,28 @@ function filterToParams(filter: TemplateFilter): Record<string, unknown> {
     page: filter.page,
     size: filter.size,
     q: filter.q,
+    min_price: priceBounds.minPrice,
+    max_price: priceBounds.maxPrice,
   };
+}
+
+function resolvePriceBounds(filter: TemplateFilter): { minPrice?: number; maxPrice?: number } {
+  if (filter.minPrice != null || filter.maxPrice != null) {
+    return { minPrice: filter.minPrice, maxPrice: filter.maxPrice };
+  }
+
+  switch (filter.priceRange) {
+    case 'free':
+      return { minPrice: 0, maxPrice: 0 };
+    case 'under_50k':
+      return { minPrice: 1, maxPrice: 49999 };
+    case '50k_100k':
+      return { minPrice: 50000, maxPrice: 100000 };
+    case 'over_100k':
+      return { minPrice: 100001 };
+    default:
+      return {};
+  }
 }
 
 export const catalogApi = {

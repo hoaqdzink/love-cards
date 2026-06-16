@@ -15,7 +15,7 @@ class TemplateFilterParserTest {
 
     @Test
     void parseAppliesDefaultsAndTrimsQuery() {
-        TemplateFilterRequest filter = parser.parse(null, null, null, null, null, "  hoa cưới  ");
+        TemplateFilterRequest filter = parser.parse(null, null, null, null, null, "  hoa cưới  ", null, null);
 
         assertThat(filter.eventTypes()).isEmpty();
         assertThat(filter.colors()).isEmpty();
@@ -23,6 +23,8 @@ class TemplateFilterParserTest {
         assertThat(filter.page()).isZero();
         assertThat(filter.size()).isEqualTo(12);
         assertThat(filter.query()).isEqualTo("hoa cưới");
+        assertThat(filter.minPrice()).isNull();
+        assertThat(filter.maxPrice()).isNull();
     }
 
     @Test
@@ -33,7 +35,9 @@ class TemplateFilterParserTest {
                 "price_asc",
                 2,
                 24,
-                null
+                null,
+                50000L,
+                100000L
         );
 
         assertThat(filter.eventTypes()).containsExactly("wedding", "birthday");
@@ -41,15 +45,19 @@ class TemplateFilterParserTest {
         assertThat(filter.sort()).isEqualTo("price_asc");
         assertThat(filter.page()).isEqualTo(2);
         assertThat(filter.size()).isEqualTo(24);
+        assertThat(filter.minPrice()).isEqualTo(50000L);
+        assertThat(filter.maxPrice()).isEqualTo(100000L);
     }
 
     @Test
     void parseRejectsInvalidPagingAndFilterValues() {
-        assertInvalidFilter(() -> parser.parse(null, null, null, -1, 12, null), "page");
-        assertInvalidFilter(() -> parser.parse(null, null, null, 0, 101, null), "size");
-        assertInvalidFilter(() -> parser.parse("graduation", null, null, 0, 12, null), "event_type");
-        assertInvalidFilter(() -> parser.parse(null, "black", null, 0, 12, null), "colors");
-        assertInvalidFilter(() -> parser.parse(null, null, "random", 0, 12, null), "sort");
+        assertInvalidFilter(() -> parser.parse(null, null, null, -1, 12, null, null, null), "page");
+        assertInvalidFilter(() -> parser.parse(null, null, null, 0, 101, null, null, null), "size");
+        assertInvalidFilter(() -> parser.parse("graduation", null, null, 0, 12, null, null, null), "event_type");
+        assertInvalidFilter(() -> parser.parse(null, "black", null, 0, 12, null, null, null), "colors");
+        assertInvalidFilter(() -> parser.parse(null, null, "random", 0, 12, null, null, null), "sort");
+        assertInvalidFilter(() -> parser.parse(null, null, null, 0, 12, null, -1L, null), "min_price");
+        assertInvalidFilter(() -> parser.parse(null, null, null, 0, 12, null, 100000L, 50000L), "min_price");
     }
 
     @Test

@@ -74,9 +74,11 @@ class TemplateControllerTest {
                 "popular",
                 0,
                 1,
-                "rose"
+                "rose",
+                null,
+                null
         );
-        when(templateFilterParser.parse("wedding", "pink", "popular", 0, 1, "rose")).thenReturn(filter);
+        when(templateFilterParser.parse("wedding", "pink", "popular", 0, 1, "rose", null, null)).thenReturn(filter);
         when(templateCatalogService.getTemplates(filter)).thenReturn(PageResponse.<TemplateListItemResponse>builder()
                 .content(List.of(listItem()))
                 .totalElements(1)
@@ -101,7 +103,7 @@ class TemplateControllerTest {
 
     @Test
     void getTemplatesReturnsTemplateErrorForInvalidFilter() throws Exception {
-        when(templateFilterParser.parse(eq("invalid"), any(), any(), any(), any(), any()))
+        when(templateFilterParser.parse(eq("invalid"), any(), any(), any(), any(), any(), any(), any()))
                 .thenThrow(new TemplateApiException(
                         TemplateErrorCode.TPL_INVALID_FILTER,
                         "event_type không hợp lệ: invalid",

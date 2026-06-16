@@ -19,6 +19,7 @@ export type PageResponse<T> = {
 export type EventType = 'wedding' | 'birthday' | 'party' | 'other';
 export type ColorTag = 'pink' | 'white' | 'gold' | 'blue' | 'purple' | 'green' | 'red';
 export type TemplateSort = 'popular' | 'newest' | 'price_asc' | 'price_desc';
+export type PriceRange = 'free' | 'under_50k' | '50k_100k' | 'over_100k';
 export type MusicGenre = 'romantic' | 'cheerful' | 'classical' | 'acoustic';
 
 export type TemplateListItem = {
@@ -81,4 +82,7 @@ export type TemplateFilter = {
   page?: number;
   size?: number;
   q?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  priceRange?: PriceRange;
 };

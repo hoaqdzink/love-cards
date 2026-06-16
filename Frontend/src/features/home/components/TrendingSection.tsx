@@ -1,11 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAddToCart } from '@/features/cart/hooks';
 import { TemplateCard } from '@/features/catalog/components';
 import { useTrendingTemplates } from '@/features/catalog/hooks';
 
 export function TrendingSection() {
   const { t } = useTranslation();
-  const addToCart = useAddToCart();
+  const navigate = useNavigate();
   const trendingQuery = useTrendingTemplates();
   const templates = trendingQuery.data ?? [];
 
@@ -23,7 +23,7 @@ export function TrendingSection() {
                 <TemplateCard
                   key={template.id}
                   template={template}
-                  onAddToCartClick={() => addToCart(template.id)}
+                  onUseTemplateClick={(item) => navigate(`/mau-thiep/${item.slug}`)}
                 />
             ))}
             </div>

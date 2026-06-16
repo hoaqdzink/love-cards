@@ -49,9 +49,13 @@ public class TemplateController {
             @Parameter(description = "Số lượng mỗi trang", example = "12")
             @RequestParam(required = false) Integer size,
             @Parameter(description = "Từ khóa tìm kiếm", example = "rose")
-            @RequestParam(name = "q", required = false) String query
+            @RequestParam(name = "q", required = false) String query,
+            @Parameter(description = "Giá tối thiểu (VND)", example = "0")
+            @RequestParam(name = "min_price", required = false) Long minPrice,
+            @Parameter(description = "Giá tối đa (VND)", example = "100000")
+            @RequestParam(name = "max_price", required = false) Long maxPrice
     ) {
-        var filter = templateFilterParser.parse(eventType, colors, sort, page, size, query);
+        var filter = templateFilterParser.parse(eventType, colors, sort, page, size, query, minPrice, maxPrice);
         return AppResponse.success(templateCatalogService.getTemplates(filter));
     }
 

@@ -1,4 +1,4 @@
-import type { ColorTag, EventType, TemplateSort } from '@/features/catalog/types';
+import type { ColorTag, EventType, PriceRange, TemplateSort } from '@/features/catalog/types';
 
 export const EVENT_TYPE_OPTIONS: Array<{ value: EventType; labelKey: string }> = [
   { value: 'wedding', labelKey: 'catalog.filters.events.wedding' },
@@ -24,10 +24,36 @@ export const SORT_OPTIONS: Array<{ value: TemplateSort; labelKey: string }> = [
   { value: 'price_desc', labelKey: 'catalog.sort.priceDesc' },
 ];
 
+export const PRICE_RANGE_OPTIONS: Array<{ value: PriceRange; labelKey: string }> = [
+  { value: 'free', labelKey: 'catalog.price.free' },
+  { value: 'under_50k', labelKey: 'catalog.price.under50k' },
+  { value: '50k_100k', labelKey: 'catalog.price.range50k100k' },
+  { value: 'over_100k', labelKey: 'catalog.price.over100k' },
+];
+
+export const NEW_TEMPLATE_DAYS = 30;
+
 export function formatVnd(value: number): string {
   return new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
     maximumFractionDigits: 0,
   }).format(value);
+}
+
+export function isTemplateNew(createdAt: string): boolean {
+  const created = new Date(createdAt);
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - NEW_TEMPLATE_DAYS);
+  return created >= cutoff;
+}
+
+export function formatViewCount(value: number): string {
+  if (value >= 1_000_000) {
+    return `${(value / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`;
+  }
+  if (value >= 1_000) {
+    return `${(value / 1_000).toFixed(1).replace(/\.0$/, '')}k`;
+  }
+  return value.toLocaleString('vi-VN');
 }

@@ -7,22 +7,22 @@ import type { TemplateListItem } from '@/features/catalog/types';
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) =>
+    t: (key: string, options?: Record<string, string>) =>
       ({
-        'actions.addToCart': 'Thêm giỏ hàng',
+        'actions.useTemplate': 'Sử dụng mẫu',
         'actions.preview': 'Xem trước',
         'catalog.badges.featured': 'Nổi bật',
-        'catalog.badges.trending': 'Thịnh hành',
+        'catalog.badges.trending': 'Xu hướng',
+        'catalog.badges.new': 'Mới',
         'catalog.card.views': 'lượt xem',
-        'catalog.filters.colors.pink': 'Hồng',
-        'catalog.filters.colors.white': 'Trắng',
-        'catalog.filters.events.wedding': 'Đám cưới',
+        'catalog.card.uses': 'lượt dùng',
+        'catalog.card.previewAria': `Xem trước mẫu ${options?.name ?? ''}`,
       })[key] ?? key,
   }),
 }));
 
 describe('TemplateCard', () => {
-  it('renders template summary, badges and preview links', () => {
+  it('renders compact template summary, badges and metadata', () => {
     render(
       <MemoryRouter>
         <TemplateCard template={template} />
@@ -30,28 +30,36 @@ describe('TemplateCard', () => {
     );
 
     expect(screen.getByRole('heading', { name: 'Peony Dream' })).toBeInTheDocument();
-    expect(screen.getByText('Đám cưới')).toBeInTheDocument();
     expect(screen.getByText('Nổi bật')).toBeInTheDocument();
-    expect(screen.getByText('Thịnh hành')).toBeInTheDocument();
+    expect(screen.getByText('Xu hướng')).toBeInTheDocument();
+    expect(screen.getByText('Mới')).toBeInTheDocument();
     expect(screen.getByText(/99.000/)).toBeInTheDocument();
-    expect(screen.getByText(/2.400 lượt xem/)).toBeInTheDocument();
+    expect(screen.getByText(/2.4k lượt xem/)).toBeInTheDocument();
+    expect(screen.getByText(/180 lượt dùng/)).toBeInTheDocument();
     expect(screen.getByRole('img', { name: 'Peony Dream' })).toHaveAttribute('loading', 'lazy');
-    expect(screen.getByRole('link', { name: 'Xem trước' })).toHaveAttribute('href', '/mau-thiep/peony-dream');
+    expect(screen.getByRole('button', { name: 'Sử dụng mẫu' })).toBeInTheDocument();
   });
 
-  it('calls add-to-cart handler from the CTA button', async () => {
+  it('calls preview and use-template handlers', async () => {
     const user = userEvent.setup();
-    const onAddToCartClick = vi.fn();
+    const onPreviewClick = vi.fn();
+    const onUseTemplateClick = vi.fn();
 
     render(
       <MemoryRouter>
-        <TemplateCard template={template} onAddToCartClick={onAddToCartClick} />
+        <TemplateCard
+          template={template}
+          onPreviewClick={onPreviewClick}
+          onUseTemplateClick={onUseTemplateClick}
+        />
       </MemoryRouter>,
     );
 
-    await user.click(screen.getByRole('button', { name: 'Thêm giỏ hàng' }));
+    await user.click(screen.getByRole('button', { name: 'Xem trước mẫu Peony Dream' }));
+    await user.click(screen.getByRole('button', { name: 'Sử dụng mẫu' }));
 
-    expect(onAddToCartClick).toHaveBeenCalledTimes(1);
+    expect(onPreviewClick).toHaveBeenCalledWith(template);
+    expect(onUseTemplateClick).toHaveBeenCalledWith(template);
   });
 });
 
@@ -70,5 +78,5 @@ const template: TemplateListItem = {
   trending: true,
   viewCount: 2400,
   purchaseCount: 180,
-  createdAt: '2026-05-25T09:00:00',
+  createdAt: '2026-06-01T09:00:00',
 };

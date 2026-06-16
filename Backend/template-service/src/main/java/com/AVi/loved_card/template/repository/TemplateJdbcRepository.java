@@ -42,6 +42,7 @@ public class TemplateJdbcRepository {
 
         appendEventFilter(filter.eventTypes(), where, params);
         appendColorFilter(filter.colors(), where, params);
+        appendPriceFilter(filter.minPrice(), filter.maxPrice(), where, params);
         appendSearchFilter(filter.query(), where, params);
 
         String countSql = "SELECT COUNT(*) FROM catalog.templates" + where;
@@ -134,6 +135,17 @@ public class TemplateJdbcRepository {
             params.addValue(paramName, colors.get(i));
         }
         where.append(" AND (").append(String.join(" OR ", clauses)).append(")");
+    }
+
+    private void appendPriceFilter(Long minPrice, Long maxPrice, StringBuilder where, MapSqlParameterSource params) {
+        if (minPrice != null) {
+            where.append(" AND price >= :minPrice");
+            params.addValue("minPrice", minPrice);
+        }
+        if (maxPrice != null) {
+            where.append(" AND price <= :maxPrice");
+            params.addValue("maxPrice", maxPrice);
+        }
     }
 
     private void appendSearchFilter(String query, StringBuilder where, MapSqlParameterSource params) {

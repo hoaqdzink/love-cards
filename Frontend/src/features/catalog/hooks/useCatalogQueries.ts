@@ -1,7 +1,28 @@
 import { useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery, type QueryClient } from '@tanstack/react-query';
 import { catalogApi } from '@/features/catalog/api/catalogApi';
 import type { TemplateFilter } from '@/features/catalog/types';
+import {
+  readFeaturedTemplatesCache,
+  writeFeaturedTemplatesCache,
+} from '@/features/catalog/utils/featuredTemplatesCache';
+
+const FEATURED_QUERY_KEY = ['templates', 'featured'] as const;
+const FEATURED_STALE_TIME = 15 * 60 * 1000;
+
+async function fetchFeaturedTemplates() {
+  const data = await catalogApi.getFeaturedTemplates();
+  writeFeaturedTemplatesCache(data);
+  return data;
+}
+
+export function prefetchFeaturedTemplates(queryClient: QueryClient) {
+  return queryClient.prefetchQuery({
+    queryKey: FEATURED_QUERY_KEY,
+    queryFn: fetchFeaturedTemplates,
+    staleTime: FEATURED_STALE_TIME,
+  });
+}
 
 const CATALOG_SESSION_KEY = 'lc_catalog_session';
 
@@ -22,11 +43,22 @@ export function useTemplates(filter: TemplateFilter) {
   });
 }
 
+export function useTemplatesInfinite(filter: Omit<TemplateFilter, 'page'>) {
+  return useInfiniteQuery({
+    queryKey: ['templates', 'infinite', filter],
+    queryFn: ({ pageParam = 0 }) => catalogApi.getTemplates({ ...filter, page: pageParam }),
+    getNextPageParam: (lastPage) => (lastPage.hasNext ? lastPage.currentPage + 1 : undefined),
+    initialPageParam: 0,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
 export function useFeaturedTemplates() {
   return useQuery({
-    queryKey: ['templates', 'featured'],
-    queryFn: catalogApi.getFeaturedTemplates,
-    staleTime: 15 * 60 * 1000,
+    queryKey: FEATURED_QUERY_KEY,
+    queryFn: fetchFeaturedTemplates,
+    initialData: readFeaturedTemplatesCache,
+    staleTime: FEATURED_STALE_TIME,
   });
 }
 

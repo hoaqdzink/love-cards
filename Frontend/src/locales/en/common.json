@@ -13,6 +13,7 @@
   },
   "actions": {
     "addToCart": "Add to Cart",
+    "useTemplate": "Use template",
     "buyNow": "Buy Now",
     "preview": "Preview",
     "share": "Share",
@@ -28,11 +29,196 @@
     "loading": "Loading..."
   },
   "home": {
+    "hero": {
+      "badge": "Love Cards · Premium event invitations",
+      "templateCount": "{{count}}+ templates",
+      "templateCountFallback": "200+ templates",
+      "title": "Every memorable moment",
+      "titleAccent": "deserves an exquisite invitation",
+      "description": "Elegant designs, easy customization, share with a single link — make your special day truly unforgettable.",
+      "ctaPrimary": "Explore templates",
+      "ctaSecondary": "See featured designs",
+      "cta": "Explore templates",
+      "trust": "Trusted by 10,000+ couples",
+      "trustCustomers": "10,000+ customers",
+      "trustLine": "{{count}}+ templates · {{customers}} · {{rating}}",
+      "imageAlt": "Love Cards wedding invitation"
+    },
+    "trust": {
+      "stats": {
+        "templates": "Templates",
+        "templatesFallback": "200",
+        "customers": "Customers",
+        "rating": "Average rating",
+        "time": "Ready in",
+        "timeValue": "5 min"
+      },
+      "usps": {
+        "design": {
+          "title": "Premium design",
+          "desc": "Curated templates updated with the latest trends."
+        },
+        "mobile": {
+          "title": "Every device",
+          "desc": "Looks perfect on phones, tablets, and desktops."
+        },
+        "share": {
+          "title": "Instant sharing",
+          "desc": "Send a link via chat apps in seconds."
+        },
+        "customize": {
+          "title": "Easy customization",
+          "desc": "Personalize text, photos, and music your way."
+        }
+      }
+    },
+    "styles": {
+      "eyebrow": "Styles",
+      "title": "Find inspiration that matches your taste",
+      "description": "Explore design styles — from minimal elegance to luxurious gold tones.",
+      "explore": "Explore",
+      "elegant": {
+        "title": "Elegant",
+        "description": "Refined and classy for your big day"
+      },
+      "minimal": {
+        "title": "Minimal",
+        "description": "Clean, modern, content-focused"
+      },
+      "modern": {
+        "title": "Modern",
+        "description": "Fresh, creative, and vibrant"
+      },
+      "classic": {
+        "title": "Classic",
+        "description": "Warm, timeless, and traditional"
+      },
+      "luxury": {
+        "title": "Luxury",
+        "description": "Gold accents and fine details"
+      }
+    },
+    "featured": {
+      "eyebrow": "Spotlight",
+      "title": "Most loved templates",
+      "description": "A few standout designs — discover hundreds more in the full library.",
+      "browseLibrary": "Browse full library",
+      "error": "Could not load featured templates. Please try again later."
+    },
     "categories": {
       "eyebrow": "Categories",
-      "title": "Find Your Best Fit",
+      "title": "Find your best fit",
       "description": "Choose an event type and quickly explore matching invitation templates.",
       "count": "{{count}} templates"
+    },
+    "showcase": {
+      "title": "Explore templates",
+      "description": "Search, filter, and pick the right design from the homepage.",
+      "tabsLabel": "Template groups",
+      "tabs": {
+        "featured": "Featured",
+        "newest": "Newest",
+        "trending": "Trending",
+        "bestseller": "Best sellers"
+      },
+      "filters": {
+        "wedding": "Wedding",
+        "birthday": "Birthday",
+        "pink": "Pink tone",
+        "free": "Free"
+      },
+      "error": "Could not load templates. Please try again later."
+    },
+    "search": {
+      "label": "Search templates",
+      "placeholder": "Search wedding, birthday, minimal...",
+      "submit": "Search"
+    },
+    "howItWorks": {
+      "title": "How it works",
+      "description": "Three simple steps to your own digital invitation.",
+      "stepLabel": "Step {{step}}",
+      "steps": {
+        "choose": {
+          "title": "Choose a template",
+          "desc": "Filter by event, color, and style you love."
+        },
+        "customize": {
+          "title": "Customize",
+          "desc": "Add your details, photos, and music."
+        },
+        "share": {
+          "title": "Share",
+          "desc": "Send the link instantly via chat apps."
+        }
+      }
+    },
+    "collections": {
+      "eyebrow": "Collections",
+      "title": "Explore by theme",
+      "description": "Curated collections to help you discover faster.",
+      "explore": "Explore",
+      "outdoorWedding": {
+        "title": "Outdoor wedding",
+        "description": "Nature, light, and open spaces"
+      },
+      "birthday": {
+        "title": "Birthday party",
+        "description": "Bright and fun for every age"
+      },
+      "minimal": {
+        "title": "Minimal style",
+        "description": "Clean, elegant, and modern"
+      },
+      "luxury": {
+        "title": "Luxury",
+        "description": "Gold tones and refined details"
+      }
+    },
+    "testimonials": {
+      "eyebrow": "Trust",
+      "title": "What customers say about LoveCards",
+      "subtitle": "⭐ {{rating}} from {{total}}",
+      "rating": "4.9/5",
+      "totalReviews": "2,341 happy customers",
+      "marqueeLabel": "Customer reviews",
+      "verified": "Verified customer",
+      "prev": "Previous",
+      "next": "Next",
+      "items": {
+        "minhAnh": {
+          "quote": "\"The site looks beautiful and creating an invitation is incredibly fast. Everyone in our family loved how clear it is on mobile.\"",
+          "quoteShort": "Beautiful UI, fast to create, guests love viewing on mobile.",
+          "name": "Minh Anh",
+          "role": "Bride · Oct 15, 2025"
+        },
+        "tuanKiet": {
+          "quote": "\"Very professional! The customization flow feels intuitive and wedding-focused. Highly recommend.\"",
+          "quoteShort": "Very professional — highly recommend for couples planning a wedding.",
+          "name": "Tuan Kiet",
+          "role": "Groom · Sep 22, 2025"
+        },
+        "baoChau": {
+          "quote": "\"I love the romantic pink templates here. After sharing ours, friends kept asking for the website link.\"",
+          "quoteShort": "Gorgeous cards — guests loved them and asked for the link.",
+          "name": "Bao Chau",
+          "role": "Bride · Nov 1, 2025"
+        },
+        "thuHa": {
+          "quoteShort": "Made our invitation in minutes and shared via Zalo instantly.",
+          "name": "Thu Ha",
+          "role": "Bride · Dec 8, 2025"
+        }
+      }
+    },
+    "cta": {
+      "headline": "Ready to create your invitation?",
+      "title": "Over {{count}} templates waiting for you",
+      "templateCountFallback": "200",
+      "description": "Over {{count}} templates are waiting — start exploring and find the perfect design.",
+      "primary": "Browse template library",
+      "secondary": "See featured designs",
+      "browseAll": "Browse all templates"
     },
     "templates": {
       "title": "Featured Templates",
@@ -49,8 +235,12 @@
   "catalog": {
     "eyebrow": "Template Library",
     "title": "Explore Invitation Templates",
-    "description": "Search and filter by event type and colors to find the best template.",
+    "description": "Search, filter quickly, and continuously discover invitation templates.",
     "resultCount": "Showing {{from}}-{{to}} / {{total}} templates",
+    "resultTotal": "{{total}} templates",
+    "activeFilters": "Active filters",
+    "removeFilter": "Remove filter",
+    "loadingMore": "Loading more templates...",
     "search": {
       "label": "Search templates",
       "placeholder": "Search by name or description, e.g. rose, wedding..."
@@ -83,12 +273,23 @@
       "priceAsc": "Price low to high",
       "priceDesc": "Price high to low"
     },
+    "price": {
+      "label": "Price",
+      "all": "All prices",
+      "free": "Free",
+      "under50k": "Under ₫50,000",
+      "range50k100k": "₫50,000 – ₫100,000",
+      "over100k": "Over ₫100,000"
+    },
     "badges": {
       "featured": "Featured",
-      "trending": "Trending"
+      "trending": "Trending",
+      "new": "New"
     },
     "card": {
-      "views": "views"
+      "views": "views",
+      "uses": "uses",
+      "previewAria": "Preview template {{name}}"
     },
     "cart": {
       "developing": "This feature is in development"
@@ -116,7 +317,8 @@
     "preview": {
       "backToCatalog": "Back to catalog",
       "iframeTitle": "Preview {{name}}",
-      "fieldsTitle": "Customizable fields"
+      "fieldsTitle": "Customizable fields",
+      "viewDetail": "View details"
     }
   },
   "cart": {

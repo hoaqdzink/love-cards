@@ -1,72 +1,109 @@
-const testimonials = [
+import { useMemo, useState } from 'react';
+import { Star } from '@phosphor-icons/react';
+import { useTranslation } from 'react-i18next';
+
+type TestimonialItem = {
+  id: string;
+  quoteKey: string;
+  nameKey: string;
+  roleKey: string;
+  avatar: string;
+};
+
+const TESTIMONIALS: TestimonialItem[] = [
   {
-    quote:
-      '"Giao diện web rất đẹp, tạo thiệp siêu nhanh mà lại rất sang. Mình gửi cho họ hàng lớn tuổi ai cũng khen vì thiệp rõ ràng, dễ đọc trên điện thoại."',
-    name: 'Minh Anh',
-    role: 'Cô dâu',
-    date: 'Cưới 15.10.2025',
+    id: 'minh-anh',
+    quoteKey: 'home.testimonials.items.minhAnh.quoteShort',
+    nameKey: 'home.testimonials.items.minhAnh.name',
+    roleKey: 'home.testimonials.items.minhAnh.role',
     avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&auto=format&fit=crop',
   },
   {
-    quote:
-      '"Rất chuyên nghiệp! Các tính năng kéo thả trên nền tảng y như đang dùng Canva nhưng được tối ưu riêng cho ngành cưới. Cực kỳ recommend!"',
-    name: 'Tuấn Kiệt',
-    role: 'Chú rể',
-    date: 'Cưới 22.09.2025',
+    id: 'tuan-kiet',
+    quoteKey: 'home.testimonials.items.tuanKiet.quoteShort',
+    nameKey: 'home.testimonials.items.tuanKiet.name',
+    roleKey: 'home.testimonials.items.tuanKiet.role',
     avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150&auto=format&fit=crop',
   },
   {
-    quote:
-      '"Mình thích nhất mẫu thiệp lãng mạn tone hồng ở đây. Làm xong gửi bạn bè đứa nào cũng hỏi xin link web để mốt tụi nó cưới dùng luôn."',
-    name: 'Bảo Châu',
-    role: 'Cô dâu',
-    date: 'Cưới 01.11.2025',
+    id: 'bao-chau',
+    quoteKey: 'home.testimonials.items.baoChau.quoteShort',
+    nameKey: 'home.testimonials.items.baoChau.name',
+    roleKey: 'home.testimonials.items.baoChau.role',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop',
+  },
+  {
+    id: 'thu-ha',
+    quoteKey: 'home.testimonials.items.thuHa.quoteShort',
+    nameKey: 'home.testimonials.items.thuHa.name',
+    roleKey: 'home.testimonials.items.thuHa.role',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop',
   },
 ];
 
-export function TestimonialsSection() {
+function Stars() {
   return (
-    <section id="testimonials" className="py-24 bg-cream reveal">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-slate mb-2">
-            Trải Nghiệm Từ Khách Hàng
-          </h2>
-          <p className="text-slate/60">
-            4.9/5 từ <strong className="text-slate">2.341</strong> đánh giá
+    <span className="inline-flex shrink-0 items-center gap-0.5 text-gold" aria-hidden>
+      {[...Array(5)].map((_, index) => (
+        <Star key={index} size={12} weight="fill" />
+      ))}
+    </span>
+  );
+}
+
+function TestimonialCard({ item }: { item: TestimonialItem }) {
+  const { t } = useTranslation();
+
+  return (
+    <article className="w-[260px] shrink-0 rounded-xl bg-lightrose/25 px-4 py-3.5 sm:w-[280px]">
+      <div className="mb-2 flex items-center gap-2">
+        <Stars />
+        <span className="truncate text-sm font-semibold text-slate">{t(item.nameKey)}</span>
+      </div>
+      <p className="line-clamp-3 text-sm leading-relaxed text-slate/70">{t(item.quoteKey)}</p>
+      <div className="mt-3 flex items-center gap-2 pt-3">
+        <img
+          src={item.avatar}
+          alt=""
+          loading="lazy"
+          className="h-8 w-8 shrink-0 rounded-full object-cover"
+        />
+        <p className="line-clamp-1 text-xs text-slate/50">{t(item.roleKey)}</p>
+      </div>
+    </article>
+  );
+}
+
+export function TestimonialsSection() {
+  const { t } = useTranslation();
+  const [paused, setPaused] = useState(false);
+
+  const marqueeItems = useMemo(() => [...TESTIMONIALS, ...TESTIMONIALS], []);
+
+  return (
+    <section id="testimonials" className="py-14 sm:py-16">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6">
+        <header className="mb-8 text-center">
+          <h2 className="font-serif text-2xl font-bold text-slate sm:text-3xl">{t('home.testimonials.title')}</h2>
+          <p className="mt-2 text-sm text-slate/60">
+            {t('home.testimonials.subtitle', {
+              rating: t('home.testimonials.rating'),
+              total: t('home.testimonials.totalReviews'),
+            })}
           </p>
-        </div>
-        <div className="grid md:grid-cols-3 gap-8">
-          {testimonials.map((t) => (
-            <div
-              key={t.name}
-              className="bg-white p-8 rounded-[2rem] border border-lightrose shadow-card relative hover:shadow-soft hover:-translate-y-1 transition-all"
-            >
-              <div className="flex text-gold mb-4 text-sm">
-                {[...Array(5)].map((_, i) => (
-                  <i key={i} className="ph-fill ph-star" />
-                ))}
-              </div>
-              <p className="text-slate/70 text-sm mb-8 font-light leading-relaxed">
-                {t.quote}
-              </p>
-              <div className="flex items-center gap-3">
-                <img
-                  src={t.avatar}
-                  className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm"
-                  alt={t.name}
-                  loading="lazy"
-                />
-                <div>
-                  <h4 className="font-bold text-sm text-slate">{t.name}</h4>
-                  <p className="text-xs text-slate/50">
-                    {t.role} • {t.date}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
+        </header>
+
+        <div
+          className="overflow-hidden"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          aria-label={t('home.testimonials.marqueeLabel')}
+        >
+          <div className={`testimonial-marquee-track flex w-max gap-4 ${paused ? 'is-paused' : ''}`}>
+            {marqueeItems.map((item, index) => (
+              <TestimonialCard key={`${item.id}-${index}`} item={item} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

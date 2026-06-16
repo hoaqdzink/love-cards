@@ -29,7 +29,9 @@ public class TemplateFilterParser {
             String sort,
             Integer page,
             Integer size,
-            String query
+            String query,
+            Long minPrice,
+            Long maxPrice
     ) {
         int normalizedPage = page == null ? DEFAULT_PAGE : page;
         int normalizedSize = size == null ? DEFAULT_SIZE : size;
@@ -58,14 +60,32 @@ public class TemplateFilterParser {
             invalid("sort không hợp lệ: " + normalizedSort);
         }
 
+        Long normalizedMinPrice = normalizePrice(minPrice, "min_price");
+        Long normalizedMaxPrice = normalizePrice(maxPrice, "max_price");
+        if (normalizedMinPrice != null && normalizedMaxPrice != null && normalizedMinPrice > normalizedMaxPrice) {
+            invalid("min_price không được lớn hơn max_price");
+        }
+
         return new TemplateFilterRequest(
                 eventTypes,
                 colorTags,
                 normalizedSort,
                 normalizedPage,
                 normalizedSize,
-                query == null ? null : query.trim()
+                query == null ? null : query.trim(),
+                normalizedMinPrice,
+                normalizedMaxPrice
         );
+    }
+
+    private Long normalizePrice(Long value, String fieldName) {
+        if (value == null) {
+            return null;
+        }
+        if (value < 0) {
+            invalid(fieldName + " phải lớn hơn hoặc bằng 0");
+        }
+        return value;
     }
 
     public void validateGenre(String genre) {

@@ -8,9 +8,9 @@ import logo from '@/assets/images/logo/result_logoAvi.png';
 const NAV_LINKS = [
   { href: '/', label: 'Trang chủ' },
   { href: '/mau-thiep', label: 'Mẫu thiệp' },
-  { href: '#trending', label: 'Đang hot' },
-  { href: '#gallery', label: 'Bộ sưu tập' },
-  { href: '#how-it-works', label: 'Giới thiệu' },
+  { href: '#styles', label: 'Phong cách' },
+  { href: '#featured', label: 'Nổi bật' },
+  { href: '#how-it-works', label: 'Quy trình' },
   { href: '#testimonials', label: 'Đánh giá' },
   { href: '#footer', label: 'Liên hệ' },
 ] as const;

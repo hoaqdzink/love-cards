@@ -9,6 +9,8 @@ public record TemplateFilterRequest(
         String sort,
         int page,
         int size,
-        String query
+        String query,
+        Long minPrice,
+        Long maxPrice
 ) {
 }

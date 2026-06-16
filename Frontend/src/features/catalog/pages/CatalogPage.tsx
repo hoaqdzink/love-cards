@@ -1,142 +1,175 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { MainLayout } from '@/layouts/MainLayout';
-import { useAddToCart } from '@/features/cart/hooks';
-import { useDebounce } from '@/shared/hooks';
-import { CatalogPagination, CatalogState, FilterPanel, TemplateCard } from '@/features/catalog/components';
-import { useTemplates } from '@/features/catalog/hooks';
-import type { ColorTag, EventType, TemplateFilter, TemplateSort } from '@/features/catalog/types';
+import { useDebounce, useInfiniteScroll } from '@/shared/hooks';
+import {
+  CatalogActiveFilters,
+  CatalogState,
+  CatalogToolbar,
+  TemplateCard,
+  TemplateQuickPreviewModal,
+} from '@/features/catalog/components';
+import { useTemplatesInfinite } from '@/features/catalog/hooks';
+import type { ColorTag, EventType, PriceRange, TemplateListItem, TemplateSort } from '@/features/catalog/types';
 
 const DEFAULT_SORT: TemplateSort = 'popular';
-const DEFAULT_SIZE = 12;
+const PAGE_SIZE = 30;
 const EVENT_VALUES: EventType[] = ['wedding', 'birthday', 'party', 'other'];
 const COLOR_VALUES: ColorTag[] = ['pink', 'white', 'gold', 'blue', 'purple', 'green', 'red'];
 const SORT_VALUES: TemplateSort[] = ['popular', 'newest', 'price_asc', 'price_desc'];
+const PRICE_VALUES: PriceRange[] = ['free', 'under_50k', '50k_100k', 'over_100k'];
 
 export function CatalogPage() {
   const { t } = useTranslation();
-  const addToCart = useAddToCart();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState(searchParams.get('q') ?? '');
+  const [previewTemplate, setPreviewTemplate] = useState<TemplateListItem | null>(null);
   const debouncedSearch = useDebounce(searchInput, 300);
 
   const selectedEvents = useMemo(() => parseList(searchParams.get('event_type'), EVENT_VALUES), [searchParams]);
   const selectedColors = useMemo(() => parseList(searchParams.get('colors'), COLOR_VALUES), [searchParams]);
+  const priceRange = parseValue(searchParams.get('price'), PRICE_VALUES);
   const sort = parseValue(searchParams.get('sort'), SORT_VALUES) ?? DEFAULT_SORT;
-  const page = Math.max(Number(searchParams.get('page') ?? '0'), 0);
 
   useEffect(() => {
-    updateParams(setSearchParams, { q: debouncedSearch, page: '0' });
+    updateParams(setSearchParams, { q: debouncedSearch });
   }, [debouncedSearch, setSearchParams]);
 
-  const filter: TemplateFilter = {
-    eventType: selectedEvents,
-    colors: selectedColors,
-    sort,
-    page,
-    size: DEFAULT_SIZE,
-    q: debouncedSearch,
-  };
-  const templatesQuery = useTemplates(filter);
-  const templates = templatesQuery.data?.content ?? [];
+  const filter = useMemo(
+    () => ({
+      eventType: selectedEvents,
+      colors: selectedColors,
+      priceRange,
+      sort,
+      size: PAGE_SIZE,
+      q: debouncedSearch,
+    }),
+    [selectedEvents, selectedColors, priceRange, sort, debouncedSearch],
+  );
+
+  const templatesQuery = useTemplatesInfinite(filter);
+  const templates = templatesQuery.data?.pages.flatMap((page) => page.content) ?? [];
+  const totalElements = templatesQuery.data?.pages[0]?.totalElements ?? 0;
+
+  const loadMore = useCallback(() => {
+    if (templatesQuery.hasNextPage && !templatesQuery.isFetchingNextPage) {
+      void templatesQuery.fetchNextPage();
+    }
+  }, [templatesQuery]);
+
+  const sentinelRef = useInfiniteScroll({
+    enabled: templatesQuery.isSuccess && templatesQuery.hasNextPage,
+    onLoadMore: loadMore,
+  });
 
   function toggleEvent(eventType: EventType) {
     const next = toggleValue(selectedEvents, eventType);
-    updateParams(setSearchParams, { event_type: next.join(','), page: '0' });
+    updateParams(setSearchParams, { event_type: next.join(',') });
   }
 
   function toggleColor(color: ColorTag) {
     const next = toggleValue(selectedColors, color);
-    updateParams(setSearchParams, { colors: next.join(','), page: '0' });
+    updateParams(setSearchParams, { colors: next.join(',') });
   }
 
   function changeSort(nextSort: TemplateSort) {
-    updateParams(setSearchParams, { sort: nextSort, page: '0' });
+    updateParams(setSearchParams, { sort: nextSort === DEFAULT_SORT ? '' : nextSort });
+  }
+
+  function changePriceRange(nextPriceRange?: PriceRange) {
+    updateParams(setSearchParams, { price: nextPriceRange ?? '' });
   }
 
   function resetFilters() {
     setSearchInput('');
-    setSearchParams({ sort: DEFAULT_SORT, page: '0' });
+    setSearchParams({});
   }
 
-  function changePage(nextPage: number) {
-    updateParams(setSearchParams, { page: String(nextPage) });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  function handleUseTemplate(template: TemplateListItem) {
+    setPreviewTemplate(null);
+    navigate(`/mau-thiep/${template.slug}`);
   }
 
   return (
     <MainLayout>
       <section className="bg-cream pb-20 pt-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="mb-10 max-w-3xl">
+        <div className="mx-auto max-w-[1440px] px-4 sm:px-6">
+          <div className="mb-6 max-w-3xl">
             <p className="text-sm font-bold uppercase tracking-widest text-gold">{t('catalog.eyebrow')}</p>
             <h1 className="mt-3 font-serif text-4xl font-bold text-slate sm:text-5xl">{t('catalog.title')}</h1>
             <p className="mt-4 text-slate/60">{t('catalog.description')}</p>
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-[320px_1fr]">
-            <FilterPanel
-              selectedEvents={selectedEvents}
-              selectedColors={selectedColors}
-              sort={sort}
-              onToggleEvent={toggleEvent}
-              onToggleColor={toggleColor}
-              onSortChange={changeSort}
-              onReset={resetFilters}
-            />
+          <CatalogToolbar
+            searchInput={searchInput}
+            onSearchChange={setSearchInput}
+            selectedEvents={selectedEvents}
+            selectedColors={selectedColors}
+            priceRange={priceRange}
+            sort={sort}
+            onToggleEvent={toggleEvent}
+            onToggleColor={toggleColor}
+            onPriceRangeChange={changePriceRange}
+            onSortChange={changeSort}
+          />
 
-            <div className="space-y-6">
-              <label className="block">
-                <span className="sr-only">{t('catalog.search.label')}</span>
-                <input
-                  type="search"
-                  value={searchInput}
-                  onChange={(event) => setSearchInput(event.target.value)}
-                  placeholder={t('catalog.search.placeholder')}
-                  className="w-full rounded-3xl border border-lightrose bg-white px-5 py-4 text-slate outline-none shadow-card focus:border-rose focus:ring-2 focus:ring-rose/20"
-                />
-              </label>
+          <div className="mt-6 space-y-6">
+            {templatesQuery.isSuccess ? (
+              <CatalogActiveFilters
+                totalElements={totalElements}
+                searchQuery={debouncedSearch}
+                selectedEvents={selectedEvents}
+                selectedColors={selectedColors}
+                priceRange={priceRange}
+                sort={sort}
+                onRemoveEvent={toggleEvent}
+                onRemoveColor={toggleColor}
+                onRemovePriceRange={() => changePriceRange(undefined)}
+                onRemoveSort={() => changeSort(DEFAULT_SORT)}
+                onRemoveSearch={() => setSearchInput('')}
+                onResetAll={resetFilters}
+              />
+            ) : null}
 
-              {templatesQuery.isLoading ? <CatalogState type="loading" /> : null}
-              {templatesQuery.isError ? <CatalogState type="error" onRetry={() => void templatesQuery.refetch()} /> : null}
-              {templatesQuery.isSuccess && templates.length === 0 ? <CatalogState type="empty" /> : null}
+            {templatesQuery.isLoading ? <CatalogState type="loading" /> : null}
+            {templatesQuery.isError ? (
+              <CatalogState type="error" onRetry={() => void templatesQuery.refetch()} />
+            ) : null}
 
-              {templatesQuery.isSuccess && templates.length > 0 ? (
-                <>
-                  <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate/60">
-                    <span>
-                      {t('catalog.resultCount', {
-                        from: templatesQuery.data.currentPage * templatesQuery.data.size + 1,
-                        to: templatesQuery.data.currentPage * templatesQuery.data.size + templates.length,
-                        total: templatesQuery.data.totalElements,
-                      })}
-                    </span>
-                  </div>
+            {templatesQuery.isSuccess && templates.length === 0 ? <CatalogState type="empty" /> : null}
 
-                  <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                    {templates.map((template) => (
-                      <TemplateCard
-                        key={template.id}
-                        template={template}
-                        onAddToCartClick={() => addToCart(template.id)}
-                      />
-                    ))}
-                  </div>
+            {templatesQuery.isSuccess && templates.length > 0 ? (
+              <>
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:gap-5">
+                  {templates.map((template) => (
+                    <TemplateCard
+                      key={template.id}
+                      template={template}
+                      onPreviewClick={setPreviewTemplate}
+                      onUseTemplateClick={handleUseTemplate}
+                    />
+                  ))}
+                </div>
 
-                  <CatalogPagination
-                    currentPage={templatesQuery.data.currentPage}
-                    totalPages={templatesQuery.data.totalPages}
-                    hasPrevious={templatesQuery.data.hasPrevious}
-                    hasNext={templatesQuery.data.hasNext}
-                    onPageChange={changePage}
-                  />
-                </>
-              ) : null}
-            </div>
+                <div ref={sentinelRef} className="flex min-h-12 items-center justify-center py-4">
+                  {templatesQuery.isFetchingNextPage ? (
+                    <p className="text-sm text-slate/60">{t('catalog.loadingMore')}</p>
+                  ) : null}
+                </div>
+              </>
+            ) : null}
           </div>
         </div>
       </section>
+
+      <TemplateQuickPreviewModal
+        template={previewTemplate}
+        open={previewTemplate != null}
+        onClose={() => setPreviewTemplate(null)}
+        onUseTemplate={handleUseTemplate}
+      />
     </MainLayout>
   );
 }
@@ -170,6 +203,7 @@ function updateParams(
         next.set(key, value);
       }
     });
+    next.delete('page');
     return next;
   });
 }

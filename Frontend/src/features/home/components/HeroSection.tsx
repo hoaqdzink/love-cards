@@ -1,58 +1,72 @@
-// Thay bằng import heroMockup from '@/assets/images/logo/Gemini_Generated_Image_tn5ff3tn5ff3tn5f.png' khi đã thêm file ảnh
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import heroMockup from '@/assets/images/logo/introduce.png';
+import { useTotalTemplateCount } from '@/features/home/hooks/useTotalTemplateCount';
 
 export function HeroSection() {
+  const { t } = useTranslation();
+  const totalTemplates = useTotalTemplateCount();
+  const templateCount =
+    totalTemplates > 0 ? totalTemplates.toLocaleString('vi-VN') : '200';
+
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-gradient-to-br from-lightrose via-cream to-white">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-softpink rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" />
-        <div className="absolute top-40 right-20 w-72 h-72 bg-gold rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse" style={{ animationDelay: '1s' }} />
+    <section className="relative flex min-h-[min(70vh,680px)] items-center overflow-hidden pt-24 pb-12 sm:pt-28 sm:pb-16">
+      <div className="pointer-events-none absolute top-20 left-10 h-72 w-72 rounded-full bg-softpink/25 blur-3xl" />
+      <div className="pointer-events-none absolute top-40 right-20 h-72 w-72 rounded-full bg-gold/10 blur-3xl" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full min-w-0 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div className="space-y-8 z-10 animate-load">
-            <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-lightrose text-gold text-xs font-semibold uppercase tracking-widest shadow-sm">
-                ✨ Mùa cưới 2026
-                </span>
-                <span className="inline-flex items-center gap-1.5 text-sm text-slate/60">
-                <i className="ph-fill ph-users-three text-rose" />
-                <strong className="text-slate">10.000+</strong> cặp đôi tin dùng
-                </span>
-            </div>
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold leading-tight text-slate break-words">
-                Khám phá những mẫu thiệp cưới <br />
-                <span className="italic font-normal text-rose">đẹp và tinh tế</span>
-            </h1>
-            <p className="text-lg text-slate/70 max-w-md leading-relaxed font-light">
-                Tạo dấu ấn riêng cho ngày trọng đại với những thiết kế sang trọng, dễ dàng tùy chỉnh và chia sẻ niềm vui đến người thân chỉ trong vài thao tác.
-            </p>
-            <div className="flex flex-wrap gap-4 pt-2">
-                <a href="#templates" className="px-8 py-4 rounded-full bg-rose text-white font-medium hover:bg-rose/90 hover:shadow-soft hover:-translate-y-1 transition-all">
-                Xem các mẫu thiệp
-                </a>
-                <a href="#gallery" className="px-8 py-4 rounded-full bg-white text-slate font-medium border border-lightrose hover:border-gold hover:text-gold transition-all shadow-sm">
-                Khám phá bộ sưu tập
-                </a>
-            </div>
-            <div className="pt-6 border-t border-lightrose mt-8">
-                <p className="text-sm text-slate/60 leading-relaxed">
-                Thiệp cưới điện tử giúp bạn tiết kiệm chi phí in ấn, gửi tới mọi người chỉ với một link. Khách mời mở thiệp trên điện thoại, máy tính đều đẹp mắt, chuyên nghiệp.
-                </p>
-            </div>
-            </div>
+      <div className="relative z-10 mx-auto grid w-full max-w-[1440px] items-center gap-8 px-4 sm:px-6 md:grid-cols-2 md:gap-12">
+        <div className="max-w-xl space-y-5 animate-load">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="inline-flex items-center gap-2 rounded-full bg-lightrose/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-gold">
+              {t('home.hero.badge')}
+            </span>
+          </div>
 
-            <div className="relative z-10 hidden md:flex justify-center items-center animate-load" style={{ animationDelay: '0.2s' }}>
-            <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-br from-white/60 via-gold/20 to-rose/10 rounded-2xl blur-2xl" />
-                <div className="absolute -inset-px bg-gradient-to-br from-white/80 via-transparent to-white/40 rounded-xl" />
-                <img
-                src={heroMockup}
-                className="relative max-w-[560px] w-full h-auto rounded-xl animate-floating drop-shadow-2xl"
-                style={{ boxShadow: '0 0 60px rgba(255,255,255,0.3), 0 0 100px rgba(201,162,39,0.15)' }}
-                alt="Thiệp cưới mẫu"
-                />
-            </div>
-            </div>
+          <h1 className="font-serif text-3xl font-bold leading-tight text-slate sm:text-4xl lg:text-5xl">
+            {t('home.hero.title')}
+            <span className="mt-1 block font-normal italic text-rose">{t('home.hero.titleAccent')}</span>
+          </h1>
+
+          <p className="max-w-md text-base leading-relaxed text-slate/70 sm:text-lg">
+            {t('home.hero.description')}
+          </p>
+
+          <div className="flex flex-wrap gap-3 pt-1">
+            <Link
+              to="/mau-thiep"
+              className="inline-flex rounded-full bg-rose px-8 py-3.5 text-sm font-medium text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-rose/90 hover:shadow-soft"
+            >
+              {t('home.hero.ctaPrimary')}
+            </Link>
+            <a
+              href="#featured"
+              className="inline-flex rounded-full bg-lightrose/30 px-8 py-3.5 text-sm font-medium text-slate transition-all hover:bg-lightrose/50 hover:text-rose"
+            >
+              {t('home.hero.ctaSecondary')}
+            </a>
+          </div>
+
+          <p className="text-sm text-slate/50">
+            {t('home.hero.trustLine', {
+              count: templateCount,
+              rating: t('home.testimonials.rating'),
+              customers: t('home.hero.trustCustomers'),
+            })}
+          </p>
         </div>
+
+        <div className="hidden animate-load justify-center md:flex" style={{ animationDelay: '0.2s' }}>
+          <div className="relative">
+            <div className="absolute -inset-4 rounded-2xl bg-gradient-to-br from-white/60 via-gold/20 to-rose/10 blur-2xl" />
+            <img
+              src={heroMockup}
+              className="relative max-h-[360px] w-auto max-w-[400px] rounded-xl drop-shadow-2xl animate-floating"
+              alt={t('home.hero.imageAlt')}
+              loading="eager"
+            />
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

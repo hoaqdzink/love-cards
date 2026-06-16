@@ -89,7 +89,9 @@ class TemplateCatalogServiceImplTest {
                 "popular",
                 0,
                 12,
-                "peony"
+                "peony",
+                null,
+                null
         );
         PageResponse<TemplateListItemResponse> page = PageResponse.<TemplateListItemResponse>builder()
                 .content(List.of())

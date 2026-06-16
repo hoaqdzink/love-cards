@@ -124,3 +124,26 @@ body {
   .pulse-dot {
     animation: pulse-dot 2s ease-in-out infinite;
   }
+
+  @keyframes testimonial-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .testimonial-marquee-track {
+    animation: testimonial-marquee 45s linear infinite;
+  }
+
+  .testimonial-marquee-track.is-paused {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .testimonial-marquee-track {
+      animation: none;
+    }
+  }
